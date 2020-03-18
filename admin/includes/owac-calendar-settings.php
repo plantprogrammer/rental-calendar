@@ -6,7 +6,6 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 				$dateObject = DateTime::createFromFormat('!m', $m);
 		
 				$month = $dateObject->format('m');
-				$d= 2; // To Finds today's date
 				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 		/**
 		 * This will calculate the week day of the first day of the month
