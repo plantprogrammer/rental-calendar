@@ -4,10 +4,6 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 				$month =date("m");  // Month 
 				$month_cur =intval(date("m")); // Month set
 				$dateObject = DateTime::createFromFormat('!m', $m);
-				//$monthName = utf8_encode(strftime("%B", mktime(0,0,0,$m+1,0,0)));
-				$mName=strftime("%B", mktime(0,0,0,$m+1,0,0));
-				$encoding = mb_detect_encoding($mName, "auto" );
-				$monthName =mb_convert_encoding($mName, 'UTF-8','Windows-1252');
 		
 				$month = $dateObject->format('m');
 				$d= 2; // To Finds today's date
