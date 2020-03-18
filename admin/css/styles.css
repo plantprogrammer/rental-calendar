@@ -1,0 +1,315 @@
+/**
+ * Icons 
+ * Start for RB
+ */
+
+@font-face {
+  font-family: 'FontAwesome5';
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: url("../fonts/FontAwesome5.eot");
+  src: url("../fonts/FontAwesome5.eot?#iefix") format("embedded-opentype"),
+   	   url("../fonts/FontAwesome5.woff2") format("woff2"), 
+	   url("../fonts/FontAwesome5.woff") format("woff"), 
+	   url("../fonts/FontAwesome5.ttf") format("truetype"), 
+	   url("../fonts/FontAwesome5.svg#FontAwesome5") format("svg"); 
+}
+/* Plugin CSS Styles Start Here */
+
+div.owac-main p.search-box{
+	float: unset !important;
+	text-align: right;
+	margin-bottom: 8px;
+}
+div.owac-main .search-box input[name="s"]{
+	float: unset !important;
+}
+div.owac-main table.list {
+	border-collapse: collapse;
+}
+/*table, td, th {
+	border: 1px solid black;
+	padding: 20px;
+	text-align: center;
+}*/
+div.owac-main table.list{
+	table-layout: fixed;
+	background: #fff;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 1px rgba(0,0,0,.04);
+	border-spacing: 0;
+	width: 100%;
+	clear: both;
+	margin: 0;
+	margin-top: 10px;
+}
+div.owac-main table.list > thead > tr >th{
+	border-bottom: 1px solid #e1e1e1;
+	text-align: left;
+	color: #32373c;
+	overflow: hidden;
+	padding: 8px;
+	text-transform: capitalize;
+	transition: none;
+	text-decoration: none;
+}
+div.owac-main table.list > thead > tr >th >a{
+	color: #0073aa;
+	transition: none;
+	text-decoration: none;
+}
+div.owac-main table.list > thead > tr >th.check-id{
+	width: 10px;
+}
+div.owac-main table.list > tbody > tr:nth-child(odd){
+	background-color: #f9f9f9;
+}
+div.owac-main table.list > tbody > tr.details >td{
+	font-size: 14px;
+	line-height: 1.5em;
+	vertical-align: top;
+	padding: 8px 8px;
+	color: #0073aa;
+	word-wrap: break-word;
+}
+div.owac-main table.list > tbody > tr.details >td.product img{
+	width: 176px;
+}
+div.owac-main table.list > tbody > tr.no-items >td{
+	padding: 8px 10px;
+}
+div.owac-main .tablenav{
+	clear: both;
+    height: 30px;
+    margin: 6px 0 4px;
+    vertical-align: middle;
+}
+div.owac-main .tablenav .tablenav-pages{
+	float: right;
+    height: 28px;
+    margin-top: 3px;
+    cursor: default;
+    color: #555;
+}
+div.owac-main .tablenav .displaying-num{
+	margin-right: 7px;
+}
+div.owac-main .screen-reader-text,
+div.owac-main .screen-reader-text span, 
+div.owac-main .ui-helper-hidden-accessible{
+	border: 0;
+    clip: rect(1px,1px,1px,1px);
+    -webkit-clip-path: inset(50%);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    word-wrap: normal!important;
+}
+div.owac-main .tablenav .total-pages{
+	margin-right: 2px;
+}
+div.owac-main .tablenav-pages-navspan{
+	height: 16px;
+    border-color: #ddd;
+    background: #f7f7f7;
+    color: #a0a5aa;
+}
+div.owac-main div.tablenav-pages a{
+	text-decoration: none !important;
+}
+div.owac-main div.tablenav-pages a.next-page,
+div.owac-main div.tablenav-pages a.prev-page,
+div.owac-main div.tablenav-pages a.first-page,
+div.owac-main div.tablenav-pages a.last-page{
+	display: inline-block;
+	min-width: 17px;
+	border: 1px solid #ccc;
+	padding: 3px 5px 7px;
+	background: #e5e5e5;
+	font-size: 16px;
+	line-height: 1;
+	font-weight: 400;
+	text-align: center;
+}
+div.owac-main div.tablenav-pages{
+	text-align: right;
+}
+div.owac-main div.tablenav-pages.bottom{
+	margin-top: 3px;
+}	
+div#wpwrap .simple-form{
+	background-color: #999 !important;
+	text-align: -webkit-center;
+}
+#wpwrap .simple-form-table{
+	position: relative;
+    display: inline-block;
+    width: 50%;
+}
+#wpwrap .simple-form-table tbody{
+	position: relative;
+    display: inline-block;
+    width: 100%;
+}
+#wpwrap .simple-form-table tbody .simple-form-title{
+	position: relative;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+#wpwrap .simple-form-table tbody .simple-form-title th{
+	position: relative;
+    display: inline-block;
+    padding: 10px;
+    font-size: 20px;
+}
+div.owac-main table.form{
+	position: relative;
+    width: 70%;
+}
+div.owac-main table.form tbody{
+	width: 100%;
+    position: relative;
+}
+div.owac-main table.form tbody tr{
+	width: 100%;
+    position: relative;
+	text-transform: capitalize;
+}
+div.owac-main table.form tbody tr th{
+	position: relative;
+    width: 100%;
+	text-align: left;
+}
+div.owac-main table.form tbody tr td input{
+	padding: 3px 5px;
+	border: 1px solid #ddd;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,.07);
+	width: 45.5%;
+	margin-bottom: 5px;
+}
+div.owac-main table.form tbody tr td input[type="checkbox"]{
+	width: 0%;
+}
+div.owac-main table.form tbody tr td > div.controls{
+	height: 17px;
+	font-size: 0;
+}
+div.owac-main table.form tbody tr td > div.controls span.add-on{
+	display: inline-block;
+    width: auto;
+    height: 20px;
+    min-width: 16px;
+    padding: 4px 5px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+    text-align: center;
+    text-shadow: 0 1px 0 #ffffff;
+    background-color: #eeeeee;
+    border: 1px solid #ccc;
+	border-radius: 0px;
+}
+div.owac-main [class^="icon-"],
+div.owac-main [class*=" icon-"]{
+	display:inline-block;
+	width:14px;
+	height:14px;
+	*margin-right:.3em;
+	line-height:14px;
+	vertical-align:text-top;
+	background-image:url("../bootstrap/img/glyphicons-halflings.png");
+	background-position:14px 14px;
+	background-repeat:no-repeat;
+	margin-top:1px;
+}
+div.owac-main .icon-arrow-left:before , div.owac-main .icon-arrow-right:before{
+	content: "" !important;
+}
+div.owac-main .icon-th{
+	background-position:-240px 0;
+}
+div.owac-main .icon-remove{
+	background-position:-312px 0;
+}
+div.owac-main .dropdown-menu{
+	position:absolute;
+	top:100%;
+	left:0;
+	z-index:1000;
+	display:none;
+	float:left;
+	min-width:160px;
+	padding:5px 0;
+	margin:2px 0 0;
+	list-style:none;
+	background-color:#ffffff;
+	border:1px solid #ccc;
+	border:1px solid rgba(0, 0, 0, 0.2);
+}
+div.owac-main table.form tbody tr td > div.controls input{
+	height: 30px;
+	margin-bottom: 0px;
+}
+div.owac-main table.form tbody tr td input[type="submit"],
+div.owac-main table.form tbody tr td input[type="button"]{
+	padding: 3px 5px;
+	width: 15%;
+}
+div.owac-main table.form tbody tr td a{
+	text-decoration: none !important;
+}
+div.owac-main table.owac_posts > tbody > tr > td.cat_color  strong{
+	width: 30px !important;
+    height: 30px !important;
+    position: relative !important;
+    display: block !important;
+}
+div.owac-main table.form tbody tr.address td textarea{
+	width: 351px;
+}
+div.owac-main table.form tbody tr.product td img{
+	width: 176px;
+}
+div.owac-main .updated.notice{
+	margin: 5px 0 15px;
+	border-left-color: #46b450 !important;
+	background: #fff;
+    border-left: 4px solid #fff;
+    box-shadow: 0px 5px 10px 4px rgba(0,0,0,.1);
+    padding: 1px 12px;
+}
+div.owac-main .updated.notice p{
+	margin: .5em 0;
+    padding: 2px;
+	font-size: 13px;
+    line-height: 1.5;
+	margin-right: 6px;
+    vertical-align: bottom;
+}
+div.owac form table.form-table tr td input[readonly]{
+	background-color: #ffffff !important;
+}
+div.shortcode h4{
+	position: relative;
+    display: inline-block;
+	margin-right: 5px;
+}
+div.shortcode p{
+	position: relative;
+    display: inline-block;
+}
+.form-table tr.owac_required th sup{
+	color: #ff0000;
+}
+.disable
+{
+	color: gainsboro;
+}
+/*End Calander*/
+/*End for RB*/

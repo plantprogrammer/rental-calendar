@@ -1,0 +1,170 @@
+@charset 'UTF-8';
+/* 
+ * Slider 
+ * Start for RB
+ */
+.owac-loading .owac-list{
+    background: #fff url('./ajax-loader.gif') center center no-repeat;
+}
+/**
+ * Icons 
+ * Start for RB
+ */
+
+@font-face {
+  font-family: 'FontAwesome5';
+  font-style: normal;
+  font-weight: 900;
+  font-display: auto;
+  src: url("../fonts/FontAwesome5.eot");
+  src: url("../fonts/FontAwesome5.eot?#iefix") format("embedded-opentype"),
+   	   url("../fonts/FontAwesome5.woff2") format("woff2"), 
+	   url("../fonts/FontAwesome5.woff") format("woff"), 
+	   url("../fonts/FontAwesome5.ttf") format("truetype"), 
+	   url("../fonts/FontAwesome5.svg#FontAwesome5") format("svg"); 
+}
+  
+/**
+ * Arrows 
+ * Start for RB
+ */
+.owac-prev,
+.owac-next{
+    font-size: 0;
+    line-height: 0;
+    position: absolute;
+    top: 50%;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    -webkit-transform: translate(0, -50%);
+    -ms-transform: translate(0, -50%);
+    transform: translate(0, -50%);
+    cursor: pointer;
+    color: transparent;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.owac-prev:hover,
+.owac-prev:focus,
+.owac-next:hover,
+.owac-next:focus{
+    color: transparent;
+    outline: none;
+    background: transparent;
+}
+.owac-prev:hover:before,
+.owac-prev:focus:before,
+.owac-next:hover:before,
+.owac-next:focus:before{
+    opacity: 1;
+}
+.owac-prev.owac-disabled:before,
+.owac-next.owac-disabled:before{
+    opacity: .25;
+}
+.owac-prev:before,
+.owac-next:before{
+    font-family: 'FontAwesome5' !important;
+    font-size: 20px;
+    line-height: 1;
+    opacity: .75;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.owac-prev{
+    left: -20px;
+}
+[dir='rtl'] .owac-prev{
+    right: -20px;
+    left: auto;
+}
+.owac-prev:before{
+    content: '\f053';
+}
+[dir='rtl'] .owac-prev:before{
+    content: '\f053';
+}
+.owac-next{
+    right: -20px;
+}
+[dir='rtl'] .owac-next{
+    right: auto;
+    left: -20px;
+}
+.owac-next:before{
+    content: '\f054';
+}
+[dir='rtl'] .owac-next:before{
+    content: '\f054';
+}
+/** 
+ * Dots 
+ * Start for RB
+ */
+.owac-dotted.owac-slider{
+    margin-bottom: 30px;
+}
+.owac-dots{
+    position: absolute;
+    bottom: -25px;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-align: center;
+}
+.owac-dots li{
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin: 0 5px;
+    padding: 0;
+    cursor: pointer;
+}
+.owac-dots li button{
+    font-size: 0;
+    line-height: 0;
+    display: block;
+    width: 20px;
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+    color: transparent;
+    border: 0;
+    outline: none;
+    background: transparent;
+}
+.owac-dots li button:hover,
+.owac-dots li button:focus{
+    outline: none;
+}
+.owac-dots li button:hover:before,
+.owac-dots li button:focus:before{
+    opacity: 1;
+}
+.owac-dots li button:before{
+    font-family: 'owac';
+    font-size: 6px;
+    line-height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    content: '•';
+    text-align: center;
+    opacity: .25;
+    color: black;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.owac-dots li.owac-active button:before{
+    opacity: .75;
+    color: black;
+}
