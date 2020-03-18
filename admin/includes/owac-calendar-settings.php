@@ -30,11 +30,6 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 		        $monthPrior = $dateObjectPrior->format('m');
 		        $no_of_days_prior = cal_days_in_month(CAL_GREGORIAN, $monthPrior, $year);//calculate number of days in prior month
 		        $wk_day_prior = date('w',mktime(0,0,0,$monthPrior,$no_of_days_prior,$year));
-		//calculate the number of days after        
-		        $monthAfter =date("m");  // Month 
-		        $dateObjectAfter = DateTime::createFromFormat('!m', $m+1);
-		        $monthAfter = $dateObjectAfter->format('m');
-		        $no_of_days_after = cal_days_in_month(CAL_GREGORIAN, $monthAfter, $year);//calculate number of days in prior month
 		//insert days from the previous month
 		        $adj = "";
                 $diff = $wk_day_num - 1;
@@ -56,6 +51,12 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 					}
 			        $diff--;
 			    }
+			    
+			    //calculate the number of days after        
+		        $monthAfter =date("m");  // Month 
+		        $dateObjectAfter = DateTime::createFromFormat('!m', $m+1);
+		        $monthAfter = $dateObjectAfter->format('m');
+		        $no_of_days_after = cal_days_in_month(CAL_GREGORIAN, $monthAfter, $year);//calculate number of days in prior month
 			    
 			    $beg_month_val = 1;
 				while ($wk_day_num <= 7 & $wk_day_num != 0)
