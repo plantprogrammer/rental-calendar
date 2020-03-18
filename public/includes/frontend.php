@@ -5,19 +5,19 @@ class OWAC_calendar_front {
     {
 		global $wpdb;
 		add_shortcode('availabilitycalendareng', array($this, 'OWAC_calendar_front_shortcode_eng'));
-		add_shortcode('availabilitycalendarfre', array($this, 'OWAC_calendar_front_shortcode_fre'));
+		//add_shortcode('availabilitycalendarfre', array($this, 'OWAC_calendar_front_shortcode_fre'));
 		
 		include_once( plugin_dir_path( __FILE__ ) . '../../vendor/advanced-custom-fields/acf.php' );
     }
 	
-	private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short){	
+	private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
 		$return_value = "";
 		global $wpdb;
 		$contactus_table = $wpdb->prefix."OWAC_event";
 		if(!empty($category_short)){
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0'");
+			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		}else{
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'");
+			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		}
 		
 		for($i=0;$i<count($total_pages_sql);$i++){
@@ -41,15 +41,16 @@ class OWAC_calendar_front {
 	
     public function OWAC_calendar_front_shortcode_eng($atts = array())
     {	
-		$atts = shortcode_atts(array('category' => ''), $atts);
+		$atts = shortcode_atts(array('category' => '','apartment' => ''), $atts);
 		$category_short = $atts['category'];
+	    $apartment_short = $atts['apartment'];
 
 	   /**
 		* Get Event and Category value
 		*/
 		global $wpdb;
 		$contactus_table = $wpdb->prefix."OWAC_event";
-		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'");
+		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		$ec_category_table = $wpdb->prefix."OWAC_category";
 		if($category_short != ""){
 			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0' ORDER BY `cat_ord_num` ASC");
@@ -319,7 +320,7 @@ class OWAC_calendar_front {
 			        
 			        $month_pre = $m - 1;
 			        $empty = "";
-					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short);
+					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short,$apartment_short);
 					if(!empty($set_event)){
 						$adj .= $set_event;
 					}else{
@@ -371,7 +372,7 @@ class OWAC_calendar_front {
 		/**
 		* Call to Function
 		*/				
-					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$category_short);
+					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$category_short,$apartment_short);
 					if(!empty($set_event)){
 						$data .= $set_event;
 					}else{
@@ -401,7 +402,7 @@ class OWAC_calendar_front {
     			        
     			        $month_aft = $m + 1;
     			        $empty = "";
-    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short);
+    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short,$apartment_short);
     					if(!empty($set_event)){
     						$data .= $set_event;
     					}else{
