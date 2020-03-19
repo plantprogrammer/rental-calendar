@@ -45,19 +45,25 @@ $m = $month_cur;
 			    $no_days_left = $no_days_in_week - $no_days_prior_month;
 			    
 			    $last_day_range = $no_days_left;
-			    
-			    if ($last_day_range[0] != "_")
-				{
-				     $last_day_range = '0' . $last_day_range;   
-				}
 				
-			    echo $monthPrior . '/' . $first_day_range . " - " . $month . '/' . $last_day_range . "\n";    //get the month value for each
+			    echo date("m/d",mktime(0, 0, 0, $monthPrior, $first_day_range, $year)) . "-" . date("m/d",mktime(0, 0, 0, $month, $last_day_range, $year)) . "\n";    //get the month value for each
                 
                 while ($last_day_range <= $no_of_days)
                 {
                     $first_day_range = $last_day_range + 1;
 			        $last_day_range = $last_day_range + 7;
 			        
-			        echo $month . '/' . $first_day_range . " - " . $month . '/' . $last_day_range . "\n";    //get the month value for each
+			        echo date("m/d",mktime(0, 0, 0, $month, $first_day_range, $year)) . "-" . date("m/d",mktime(0, 0, 0, $month, $last_day_range, $year)) . "\n";    //get the month value for each
                 }
 			    $wk_day_num = date('w',mktime(0,0,0,$month,1,$year));
+			    			
+					$data .= "</ul>
+							</div>";
+				}
+		$data .= "</div>";
+		
+		$data .= "</div>";
+		
+		
+		return $data;
+    }
