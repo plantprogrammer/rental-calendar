@@ -51,34 +51,13 @@ $m = $month_cur;
 				     $last_day_range = '0' . $last_day_range;   
 				}
 				
-			    echo $monthPrior . '/' . $first_day_range . " - " . $month . '/' . $last_day_range . "\n";    //get the month value for each			    
-			     //if the last week
-			    
-			    //calculate the number of days after        
-		        $monthAfter =date("m");  // Month 
-		        $dateObjectAfter = DateTime::createFromFormat('!m', $m+1);
-		        $monthAfter = $dateObjectAfter->format('m');
-		        $no_of_days_after = cal_days_in_month(CAL_GREGORIAN, $monthAfter, $year);//calculate number of days in prior month
-			    
-			    $beg_month_val = 1;
-				while ($wk_day_num <= 7 & $wk_day_num != 0)
-				{
-				    
-				    if ($wk_day_num < 7)
-				    {
-    				    $pv="'$monthAfter'".","."'$beg_month_val'".","."'$year'";
-    			        
-    			        $month_aft = $m + 1;
-    			        $empty = "";
-    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short,$apartment_short);
-				    }
-				    if($wk_day_num==7)
-				    {
-				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><span class='price'>€$amt</span></td>"; 
-				    }
-				    $wk_day_num ++;
-				    $beg_month_val++;
-				}
-//}
-?>
+			    echo $monthPrior . '/' . $first_day_range . " - " . $month . '/' . $last_day_range . "\n";    //get the month value for each
+                
+                while ($last_day_range <= $no_of_days)
+                {
+                    $first_day_range = $last_day_range + 1;
+			        $last_day_range = $last_day_range + 7;
+			        
+			        echo $month . '/' . $first_day_range . " - " . $month . '/' . $last_day_range . "\n";    //get the month value for each
+                }
+			    $wk_day_num = date('w',mktime(0,0,0,$month,1,$year));
