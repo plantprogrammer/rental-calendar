@@ -1,4 +1,57 @@
-function OWAC_calendar_front_shortcode2($atts = array())
+<?php 
+class OWAC_Calendar_Settings
+{
+    
+    public function __construct()
+    {
+        add_action("admin_menu", array($this,"create_settings_page"));
+	add_action('admin_enqueue_scripts', array($this,"scripts_styles"));
+    }
+    
+    public function create_settings_page()
+    {
+        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment_one_cal",array($this,"settings_page_content"));
+    }
+    
+    private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
+		$return_value = "";
+		global $wpdb;
+		$contactus_table = $wpdb->prefix."OWAC_event";
+		if(!empty($category_short)){
+			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0'" . " AND apt_id =" . $apartment_short);
+		}else{
+			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
+		}
+		
+		for($i=0;$i<count($total_pages_sql);$i++){
+			$ec_category_table = $wpdb->prefix."OWAC_category";
+			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table where cat_id = ". $total_pages_sql[$i]->cat_id. " AND `flag`='0'");
+			$from_date = $total_pages_sql[$i]->from_date;
+			$to_date = $total_pages_sql[$i]->to_date;
+			$cat_color = $ec_category_sql[0]->cat_color;
+			$cat_name_eng = $ec_category_sql[0]->cat_name_eng;
+			$cat_name_fre = $ec_category_sql[0]->cat_name_fre;
+			
+			$sday="";
+			
+			if($from_date <= $pv_r && $to_date >= $pv_r) {
+				$return_value = $adj."<td ".$sday."><span class='owaccatdec' style='background-color:".$cat_color."'>$k</span></td>";
+				$cat_color_new = $cat_color;
+			}	
+		}
+		return $return_value;
+	}
+	
+	public function scripts_styles() {
+
+		wp_enqueue_style( 'owac-styles', plugin_dir_url( __FILE__ ) . '../../public/css/styles.css');
+		wp_enqueue_style( 'owac-slider', plugin_dir_url( __FILE__ ) . '../../public/css/owac.css');
+		wp_enqueue_style( 'owac-theme', plugin_dir_url( __FILE__ ) . '../../public/css/owac-theme.css');
+		
+		wp_enqueue_script( 'owac-js', plugin_dir_url( __FILE__ ) . '../../public/js/owac.js', array( 'jquery' ));
+	}
+	
+    public function OWAC_calendar_front($atts = array())
     {	
 		$atts = shortcode_atts(array('category' => '','apartment' => '','language' => ''), $atts);
 		$category_short = $atts['category'];
@@ -9,6 +62,7 @@ function OWAC_calendar_front_shortcode2($atts = array())
 		* Get Event and Category value
 		*/
 		global $wpdb;
+		$apartment_short = "2";
 		$contactus_table = $wpdb->prefix."OWAC_event";
 		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		$ec_category_table = $wpdb->prefix."OWAC_category";
@@ -61,7 +115,7 @@ function OWAC_calendar_front_shortcode2($atts = array())
 		$row_no=0; 
 		$total_month = "12";
 		$data = "";
-		$data .= "<div class='owac-calendar-container' style='background-color: #".$settings_options['background_color']." !important'>";
+		$data .= "<div class='owac-calendar-container' style='width: 50%;background-color: #".$settings_options['background_color']." !important'>";
 		/**
 		* Add JavaScript
 		*/
@@ -343,7 +397,7 @@ function OWAC_calendar_front_shortcode2($atts = array())
 					if($wk_day_num==7)
 					{
 					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= "<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>";  
+					    $data .= $adj."<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>"; 
 						$data .= "</tr><tr class='day_row'>"; // start a new row
 					    $wk_day_num=0;
 						$price_row_no++;
@@ -372,7 +426,7 @@ function OWAC_calendar_front_shortcode2($atts = array())
 				    if($wk_day_num==7)
 				    {
 				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>";  
+					    $data .= $adj."<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>"; 
 				    }
 				    $wk_day_num ++;
 				    $beg_month_val++;
@@ -400,15 +454,9 @@ function OWAC_calendar_front_shortcode2($atts = array())
 							if($category_short == ''){
 								for($i=0;$i<count($ec_category_sql);$i++){
 									$cat_color = $ec_category_sql[$i]->cat_color;
-									$cat_name = "";
-									if ($language_short == "EN")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_eng;
-									}
-									else if ($language_short == "FR")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_fre;
-									}
+
+									$cat_name = $ec_category_sql[$i]->cat_name_eng;
+	
 									$data .= "<li>";
 										$data .= "<span class='cat_color' style='background-color:".$cat_color." !important'></span>";
 										$data .= "<span class='event-name'>".$cat_name."</span>";
@@ -418,81 +466,13 @@ function OWAC_calendar_front_shortcode2($atts = array())
 								for($i=0;$i<count($ec_category_sql);$i++){
 									$cat_color = $ec_category_sql[$i]->cat_color;
 									$cat_name="";
-									if ($language_short == "EN")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_eng;
-									}
-									else if ($language_short == "FR")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_fre;
-									}
+                                    $cat_name = $ec_category_sql[$i]->cat_name_eng;
 									$data .= "<li>";
 										$data .= "<span class='cat_color' style='background-color:".$cat_color." !important'></span>";
 										$data .= "<span class='event-name'>".$cat_name."</span>";
 									$data .= "</li>";
 								}
 							}
-							
-
-
-$month_cur = intval(date("m")); // Month set
-$endmonth_cur = 12;
-$m = $month_cur;
-//for($m=$month_cur;$m<=$endmonth_cur;$m++){
-        //get current month info 
-				$month = date("m");  
-				$year = date('Y');
-				$dateObject = DateTime::createFromFormat('!m', $m);
-		        
-				$month = $dateObject->format('m');
-				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-
-		//calculate the number of days before beginning of month
-		        $dateObjectPrior = DateTime::createFromFormat('!m', $m-1);
-		        $monthPrior = $dateObjectPrior->format('m');
-		        $no_of_days_prior = cal_days_in_month(CAL_GREGORIAN, $monthPrior, $year);//calculate number of days in prior month
-		
-		//insert days from the previous month
-		        
-				$wk_day_num = date('w',mktime(0,0,0,$month,1,$year));        //This will calculate the week day of the first day of the month
-				                                                             //(0 for Sunday, 6 for Saturday)
-                $wk_day_num++;  //incremented because visually Sunday is not at first weekday in calendar position
-		        if ($wk_day_num == 7)   //if it's Saturday, wrap it around 
-		        {
-		            $wk_day_num = 0;   
-		        }
-                
-                $diff = $wk_day_num - 1;    //subtracted to get the initial date of the prior month 
-                
-                $no_days_prior_month = 0;    
-                
-                $first_day_range = $no_of_days_prior - $diff;    //get the first date involved with the range
-                
-		        for ($i=0;$i<$wk_day_num;$i++)
-			    {
-			        $cur_day_val = $no_of_days_prior - $diff;
-			        
-			        $no_days_prior_month++;
-
-			        $diff--;
-			    }
-        //calculate how many remaining days for this month
-        
-			    $no_days_in_week = 7;
-			    $no_days_left = $no_days_in_week - $no_days_prior_month;
-			    
-			    $last_day_range = $no_days_left;
-				
-			    echo date("m/d",mktime(0, 0, 0, $monthPrior, $first_day_range, $year)) . "-" . date("m/d",mktime(0, 0, 0, $month, $last_day_range, $year)) . "\n";    //get the month value for each
-                
-                while ($last_day_range <= $no_of_days)
-                {
-                    $first_day_range = $last_day_range + 1;
-			        $last_day_range = $last_day_range + 7;
-			        
-			        echo date("m/d",mktime(0, 0, 0, $month, $first_day_range, $year)) . "-" . date("m/d",mktime(0, 0, 0, $month, $last_day_range, $year)) . "\n";    //get the month value for each
-                }
-			    $wk_day_num = date('w',mktime(0,0,0,$month,1,$year));
 			    			
 					$data .= "</ul>
 							</div>";
@@ -504,3 +484,21 @@ $m = $month_cur;
 		
 		return $data;
     }
+
+
+    public function settings_page_content()
+    {
+        ?>
+        <div class="wrap>
+        <form method="post">
+           <?php $OWAC_calendar_front = new OWAC_Calendar_Settings();
+		  echo $OWAC_calendar_front->OWAC_calendar_front();?>
+        </form>
+        </div> 
+        <?php 
+    }
+}
+
+new OWAC_Calendar_Settings();
+
+?>
