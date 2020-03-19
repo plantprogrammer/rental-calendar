@@ -1,23 +1,26 @@
 <?php 
 
 $month_cur = intval(date("m")); // Month set
+$endmonth_cur = 12;
 
-for($m=$month_cur;$m<=$endmonth_cur;$m++){
-				$month =date("m");  // Month 
+//for($m=$month_cur;$m<=$endmonth_cur;$m++){
+        //get current month info 
+				$month = date("m");  
+				$year = date('Y');
 				$dateObject = DateTime::createFromFormat('!m', $m);
-		
+		        
 				$month = $dateObject->format('m');
 				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-				
+
 		//calculate the number of days before beginning of month
-		        $monthPrior =date("m");  // Month 
 		        $dateObjectPrior = DateTime::createFromFormat('!m', $m-1);
 		        $monthPrior = $dateObjectPrior->format('m');
 		        $no_of_days_prior = cal_days_in_month(CAL_GREGORIAN, $monthPrior, $year);//calculate number of days in prior month
-		        $wk_day_prior = date('w',mktime(0,0,0,$monthPrior,$no_of_days_prior,$year));
+		
 		//insert days from the previous month
-		        $adj = "";
 		        
+				$wk_day_num = date('w',mktime(0,0,0,$month,1,$year));        //This will calculate the week day of the first day of the month
+				                                                             //(0 for Sunday, 6 for Saturday)
                 $diff = $wk_day_num - 1;
                 
                 $no_days_prior_month = 0;    
@@ -33,11 +36,7 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 			        $month_pre = $m - 1;
 			        
 					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short,$apartment_short);
-					if(!empty($set_event)){
-						$adj .= $set_event;
-					}else{
-						$adj .= "<td ".$sday."><span>$cur_day_val</span></td>";
-					}
+
 			        $diff--;
 			    }
 			    
@@ -83,5 +82,5 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 				    $wk_day_num ++;
 				    $beg_month_val++;
 				}
-}
+//}
 ?>
