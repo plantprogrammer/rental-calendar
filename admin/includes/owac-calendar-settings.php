@@ -1,25 +1,15 @@
 <?php 
 
+$month_cur = intval(date("m")); // Month set
+
 for($m=$month_cur;$m<=$endmonth_cur;$m++){
 				$month =date("m");  // Month 
-				$month_cur =intval(date("m")); // Month set
 				$dateObject = DateTime::createFromFormat('!m', $m);
 		
 				$month = $dateObject->format('m');
 				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-		/**
-		 * This will calculate the week day of the first day of the month
-		 * (0 for Sunday, 6 for Saturday)
-		 */
-				$wk_day_num = date('w',mktime(0,0,0,$month,1,$year));
-		        $price_row_no = 1;  //deal with this later
-		
-		        $wk_day_num++;  //incremented because visually Sunday is not at first weekday in calendar position
-		        if ($wk_day_num == 7)   //if it's Saturday, wrap it around 
-		        {
-		            $wk_day_num = 0;   
-		        }
-		//calculate the number of days before beginning 
+				
+		//calculate the number of days before beginning of month
 		        $monthPrior =date("m");  // Month 
 		        $dateObjectPrior = DateTime::createFromFormat('!m', $m-1);
 		        $monthPrior = $dateObjectPrior->format('m');
@@ -27,17 +17,21 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 		        $wk_day_prior = date('w',mktime(0,0,0,$monthPrior,$no_of_days_prior,$year));
 		//insert days from the previous month
 		        $adj = "";
+		        
                 $diff = $wk_day_num - 1;
+                
+                $no_days_prior_month = 0;    
+                
+                $first_day_range = $no_of_days_prior - $diff;    //get the first date involved with the range
+                
 		        for ($i=0;$i<$wk_day_num;$i++)
 			    {
 			        $cur_day_val = $no_of_days_prior - $diff;
-			        $pv="'$monthPrior'".","."'$cur_day_val'".","."'$year'";
-					$pv_r="$cur_day_val"."-"."$monthPrior"."-"."$year";
-					$pv_r=strtotime($pv_r);
-					$sday="class='disable extradays'";
+			        
+			        $no_days_prior_month++;
 			        
 			        $month_pre = $m - 1;
-			        $empty = "";
+			        
 					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short,$apartment_short);
 					if(!empty($set_event)){
 						$adj .= $set_event;
@@ -46,6 +40,22 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 					}
 			        $diff--;
 			    }
+			    
+			    $no_days_in_week = 7;
+			    $no_days_left = $no_days_in_week - $no_days_prior_month;
+			    
+			    $day_of_month;
+			    
+			    for ($day_of_month = 1; $day_of_month <= $no_days_left; $day_of_month++)
+			    {
+			           
+			    }
+			    
+			    $last_day_range = $day_of_month;
+			    
+			    echo $monthPrior . $first_day_range . $month . $last_day_range;    //get the month value for each
+			    
+			     //if the last week
 			    
 			    //calculate the number of days after        
 		        $monthAfter =date("m");  // Month 
@@ -60,18 +70,10 @@ for($m=$month_cur;$m<=$endmonth_cur;$m++){
 				    if ($wk_day_num < 7)
 				    {
     				    $pv="'$monthAfter'".","."'$beg_month_val'".","."'$year'";
-    					$pv_r="$beg_month_val"."-"."$monthAfter"."-"."$year";
-    					$pv_r=strtotime($pv_r);
-    					$sday="class='disable extradays'";
     			        
     			        $month_aft = $m + 1;
     			        $empty = "";
     					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short,$apartment_short);
-    					if(!empty($set_event)){
-    						$data .= $set_event;
-    					}else{
-    						$data .= "<td ".$sday."><span>$beg_month_val</span></td>";
-    					}
 				    }
 				    if($wk_day_num==7)
 				    {
