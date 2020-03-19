@@ -4,8 +4,15 @@ class OWAC_Calendar_Settings
     
     public function __construct()
     {
-        add_action("admin_menu", array($this,"create_settings_page"));
+    add_action("admin_menu", array($this,"create_settings_page"));
+    add_action( 'admin_init', array( $this, 'OWAC_calendar_front' ));
 	add_action('admin_enqueue_scripts', array($this,"scripts_styles"));
+    add_action( 'admin_init', array( $this, 'setup_sections' ) );
+    }
+    
+    public function setup_sections()
+    {
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', false, 'apartment_one_cal' );
     }
     
     public function create_settings_page()
@@ -397,7 +404,11 @@ class OWAC_Calendar_Settings
 					if($wk_day_num==7)
 					{
 					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>"; 
+					    $data .= $adj."<td ".$sday."><input type='text' name=" . $month . "-" . $price_row_no . " id='" . $month . "-" . $price_row_no . "' value = '" . get_option($month . "-" . $price_row_no) . "' </td>"; 
+	                    
+	                    add_settings_field($month . "-" . $price_row_no, '', false, 'apartment_one_cal', 'calendar' );
+	                    register_setting( 'apartment_one_cal', $month . "-" . $price_row_no);
+	                    
 						$data .= "</tr><tr class='day_row'>"; // start a new row
 					    $wk_day_num=0;
 						$price_row_no++;
@@ -481,7 +492,8 @@ class OWAC_Calendar_Settings
 		
 		$data .= "</div>";
 		
-		
+		settings_fields( 'apartment_one_cal' );
+		do_settings_sections( 'apartment_one_cal' );
 		return $data;
     }
 
@@ -494,6 +506,7 @@ class OWAC_Calendar_Settings
             <form method="post">
                <?php $OWAC_calendar_front = new OWAC_Calendar_Settings();
     		   echo $OWAC_calendar_front->OWAC_calendar_front();?>
+    		   <?php submit_button(); ?>
             </form>
         </div> 
         <?php 
