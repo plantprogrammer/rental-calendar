@@ -489,11 +489,12 @@ class OWAC_Calendar_Settings
     public function settings_page_content()
     {
         ?>
-        <div class="wrap>
-        <form method="post">
-           <?php $OWAC_calendar_front = new OWAC_Calendar_Settings();
-		  echo $OWAC_calendar_front->OWAC_calendar_front();?>
-        </form>
+        <div class="wrap">
+            <h1>Apartment 1</h1>
+            <form method="post">
+               <?php $OWAC_calendar_front = new OWAC_Calendar_Settings();
+    		   echo $OWAC_calendar_front->OWAC_calendar_front();?>
+            </form>
         </div> 
         <?php 
     }
