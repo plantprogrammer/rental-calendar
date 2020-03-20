@@ -5,23 +5,26 @@ class OWAC_Calendar_Settings
     public function __construct()
     {
         add_action("admin_menu", array($this,"create_settings_page"));
-        add_action( 'admin_init', array( $this, 'setup_sections' ) );   
-        add_action( 'admin_init', array( $this, 'OWAC_calendar_front' ));
+        add_action( 'admin_init', array( $this, 'setup_sections' ) );
+	add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
+        add_action( 'admin_init', function() {$this->OWAC_calendar_front("2");});
+        add_action( 'admin_init', function() {$this->OWAC_calendar_front("3");});
+        add_action( 'admin_init', function() {$this->OWAC_calendar_front("4");});   
     	add_action('admin_enqueue_scripts', array($this,"scripts_styles"));
     }
     
     public function setup_sections()
     {
-        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
-        add_settings_section( 'calendar', 'Apartment 2 Calendar', array($this, "output_calendar"), 'apartment-two-cal' );
-        add_settings_section( 'calendar', 'Apartment 3 Calendar', array($this, "output_calendar"), 'apartment-three-cal' );
-        add_settings_section( 'calendar', 'Apartment 4 Calendar', array($this, "output_calendar"), 'apartment-four-cal' );
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', function() {$this -> output_calendar("1");}, 'apartment-one-cal' );
+        add_settings_section( 'calendar', 'Apartment 2 Calendar', function() {$this -> output_calendar("2");}, 'apartment-two-cal' );
+        add_settings_section( 'calendar', 'Apartment 3 Calendar', function() {$this -> output_calendar("3");}, 'apartment-three-cal' );
+        add_settings_section( 'calendar', 'Apartment 4 Calendar', function() {$this -> output_calendar("4");}, 'apartment-four-cal' );
     }
     
-    public function output_calendar()
+    public function output_calendar($apt_num)
     {
-        $OWAC_calendar_front = new OWAC_Calendar_Settings();
-        echo $OWAC_calendar_front->OWAC_calendar_front();   
+        $OWAC_calendar_front = new OWAC_Calendar_Settings($apt_num);
+        echo $OWAC_calendar_front->OWAC_calendar_front($apt_num);   
     }
     
     public function create_settings_page()
@@ -32,15 +35,11 @@ class OWAC_Calendar_Settings
         add_submenu_page("availabilitycalendar","Apartment 4 Calendar","Apartment 4 Calendar","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");});
     }
     
-    private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
+    private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$apartment_short){	
 		$return_value = "";
 		global $wpdb;
 		$contactus_table = $wpdb->prefix."OWAC_event";
-		if(!empty($category_short)){
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0'" . " AND apt_id =" . $apartment_short);
-		}else{
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
-		}
+		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		
 		for($i=0;$i<count($total_pages_sql);$i++){
 			$ec_category_table = $wpdb->prefix."OWAC_category";
@@ -70,19 +69,37 @@ class OWAC_Calendar_Settings
 		wp_enqueue_script( 'owac-js', plugin_dir_url( __FILE__ ) . '../../public/js/owac.js', array( 'jquery' ));
 	}
 	
-    public function OWAC_calendar_front()
+    public function OWAC_calendar_front($apt_num)
     {	
 	   /**
 		* Get Event and Category value
 		*/
 		global $wpdb;
-		$apartment_short = "2";
+		$apartment_short = $apt_num;
 		$contactus_table = $wpdb->prefix."OWAC_event";
 		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		$ec_category_table = $wpdb->prefix."OWAC_category";
         $ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `flag`='0' ORDER BY `cat_ord_num` ASC");
 		$settings_options = get_option( 'OWAC_settings_option' );
 		$display_calendar_month = preg_replace("/[^0-9\.]/", '', $settings_options['display_calendar_month']);
+		
+		$reg_setting_apt_num;
+		
+		switch ($apt_num) 
+		{
+		    case "1":
+		        $reg_setting_apt_num = "one";
+		        break;
+		    case "2":
+		        $reg_setting_apt_num = "two";
+		        break;
+		    case "3":
+		        $reg_setting_apt_num = "three";
+		        break;
+		    case "4":
+		        $reg_setting_apt_num = "four";
+		        break;
+		}
 		
 		/**
 		* Set year
@@ -361,7 +378,7 @@ class OWAC_Calendar_Settings
 					$pv_r=strtotime($pv_r);
 					$sday="class='disable'";
 			
-					$set_event = $this->OWAC_check_date($pv_r,$day_val,$adj,$wk_day_num,$m,$category_short);
+					$set_event = $this->OWAC_check_date($pv_r,$day_val,$adj,$wk_day_num,$m);
 					if(!empty($set_event)){
 						$data .= $set_event;
 					}else{
@@ -406,11 +423,11 @@ class OWAC_Calendar_Settings
 					$wk_day_num ++;
 					if($wk_day_num==7)
 					{
-					    $input_field_id = $month . "-" . $price_row_no;
+					    $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
 					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
 	                    
-	                    register_setting( 'apartment-one-cal', $input_field_id);
+	                    register_setting( 'apartment-' . $reg_setting_apt_num .'-cal', $input_field_id);
 	                    
 						$data .= "</tr><tr class='day_row'>"; // start a new row
 					    $wk_day_num=0;
@@ -439,11 +456,11 @@ class OWAC_Calendar_Settings
 				    }
 				    if($wk_day_num==7)
 				    {
-				        $input_field_id = $month . "-" . $price_row_no;
+				        $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
 				        
 				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
 				        
-				        register_setting( 'apartment-one-cal', $input_field_id);
+				        register_setting( 'apartment-' . $reg_setting_apt_num . '-cal', $input_field_id);
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
 				    }
 				    $wk_day_num ++;
