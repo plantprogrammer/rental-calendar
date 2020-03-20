@@ -252,14 +252,13 @@ div.header
 {
 	margin-top:40px;
 }
-#Price
+div.owac-calendar-container table.main tbody tr.day_row td .price
 {
 	width: 3em !important;
 }
-div.owac-calendar-container table.main tbody tr.day_row td span.price
+div.owac-calendar-container table.main tbody tr.day_row td input
 {
 	width: 3em !important;
-	color: blue;
 }
 div.owac-calendar-container tr td.extradays
 {
