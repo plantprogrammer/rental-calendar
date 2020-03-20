@@ -255,6 +255,11 @@ div.header
 div.owac-calendar-container table.main tbody tr.day_row td .price
 {
 	width: 3em !important;
+	color: black;
+}
+div.owac-calendar-container table.main tbody tr.day_title th span.price 
+{
+	width: 3em !important;
 }
 div.owac-calendar-container table.main tbody tr.day_row td input
 {
