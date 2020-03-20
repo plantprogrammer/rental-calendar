@@ -13,9 +13,9 @@ class OWAC_Calendar_Settings
     public function setup_sections()
     {
         add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
-        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
-        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
-        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
+        add_settings_section( 'calendar', 'Apartment 2 Calendar', array($this, "output_calendar"), 'apartment-two-cal' );
+        add_settings_section( 'calendar', 'Apartment 3 Calendar', array($this, "output_calendar"), 'apartment-three-cal' );
+        add_settings_section( 'calendar', 'Apartment 4 Calendar', array($this, "output_calendar"), 'apartment-four-cal' );
     }
     
     public function output_calendar()
@@ -70,13 +70,8 @@ class OWAC_Calendar_Settings
 		wp_enqueue_script( 'owac-js', plugin_dir_url( __FILE__ ) . '../../public/js/owac.js', array( 'jquery' ));
 	}
 	
-    public function OWAC_calendar_front($atts = array())
+    public function OWAC_calendar_front()
     {	
-		$atts = shortcode_atts(array('category' => '','apartment' => '','language' => ''), $atts);
-		$category_short = $atts['category'];
-	    $apartment_short = $atts['apartment'];
-	    $language_short = $atts['language'];
-
 	   /**
 		* Get Event and Category value
 		*/
@@ -85,11 +80,7 @@ class OWAC_Calendar_Settings
 		$contactus_table = $wpdb->prefix."OWAC_event";
 		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		$ec_category_table = $wpdb->prefix."OWAC_category";
-		if($category_short != ""){
-			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0' ORDER BY `cat_ord_num` ASC");
-		}else{
-			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `flag`='0' ORDER BY `cat_ord_num` ASC");
-		}
+        $ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `flag`='0' ORDER BY `cat_ord_num` ASC");
 		$settings_options = get_option( 'OWAC_settings_option' );
 		$display_calendar_month = preg_replace("/[^0-9\.]/", '', $settings_options['display_calendar_month']);
 		
@@ -353,7 +344,7 @@ class OWAC_Calendar_Settings
 			        
 			        $month_pre = $m - 1;
 			        $empty = "";
-					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short,$apartment_short);
+					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$apartment_short);
 					if(!empty($set_event)){
 						$adj .= $set_event;
 					}else{
@@ -405,7 +396,7 @@ class OWAC_Calendar_Settings
 		/**
 		* Call to Function
 		*/				
-					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$category_short,$apartment_short);
+					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$apartment_short);
 					if(!empty($set_event)){
 						$data .= $set_event;
 					}else{
@@ -439,7 +430,7 @@ class OWAC_Calendar_Settings
     			        
     			        $month_aft = $m + 1;
     			        $empty = "";
-    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short,$apartment_short);
+    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$apartment_short);
     					if(!empty($set_event)){
     						$data .= $set_event;
     					}else{
@@ -478,8 +469,8 @@ class OWAC_Calendar_Settings
 				if($settings_options['category_display'] == 'yes'){	
 					$data .= "<div class='event-calendar'>
 								<ul>";
-							if($category_short == ''){
-								for($i=0;$i<count($ec_category_sql);$i++){
+								for($i=0;$i<count($ec_category_sql);$i++)
+								{
 									$cat_color = $ec_category_sql[$i]->cat_color;
 
 									$cat_name = $ec_category_sql[$i]->cat_name_eng;
@@ -489,21 +480,12 @@ class OWAC_Calendar_Settings
 										$data .= "<span class='event-name'>".$cat_name."</span>";
 									$data .= "</li>";
 								}	
-							}else{
-								for($i=0;$i<count($ec_category_sql);$i++){
-									$cat_color = $ec_category_sql[$i]->cat_color;
-									$cat_name="";
-                                    $cat_name = $ec_category_sql[$i]->cat_name_eng;
-									$data .= "<li>";
-										$data .= "<span class='cat_color' style='background-color:".$cat_color." !important'></span>";
-										$data .= "<span class='event-name'>".$cat_name."</span>";
-									$data .= "</li>";
-								}
+							
 							}
 			    			
 					$data .= "</ul>
 							</div>";
-				}
+
 		$data .= "</div>";
 		
 		$data .= "</div>";
