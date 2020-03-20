@@ -4,20 +4,26 @@ class OWAC_Calendar_Settings
     
     public function __construct()
     {
-    add_action("admin_menu", array($this,"create_settings_page"));
-    add_action( 'admin_init', array( $this, 'OWAC_calendar_front' ));
-	add_action('admin_enqueue_scripts', array($this,"scripts_styles"));
-    add_action( 'admin_init', array( $this, 'setup_sections' ) );
+        add_action("admin_menu", array($this,"create_settings_page"));
+        add_action( 'admin_init', array( $this, 'setup_sections' ) );   
+        add_action( 'admin_init', array( $this, 'OWAC_calendar_front' ));
+    	add_action('admin_enqueue_scripts', array($this,"scripts_styles"));
     }
     
     public function setup_sections()
     {
-        add_settings_section( 'calendar', 'Apartment 1 Calendar', false, 'apartment_one_cal' );
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
+    }
+    
+    public function output_calendar()
+    {
+        $OWAC_calendar_front = new OWAC_Calendar_Settings();
+        echo $OWAC_calendar_front->OWAC_calendar_front();   
     }
     
     public function create_settings_page()
     {
-        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment_one_cal",array($this,"settings_page_content"));
+        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment-one-cal",array($this,"settings_page_content"));
     }
     
     private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
@@ -403,11 +409,11 @@ class OWAC_Calendar_Settings
 					$wk_day_num ++;
 					if($wk_day_num==7)
 					{
+					    $input_field_id = $month . "-" . $price_row_no;
 					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><input type='text' name=" . $month . "-" . $price_row_no . " id='" . $month . "-" . $price_row_no . "' value = '" . get_option($month . "-" . $price_row_no) . "' </td>"; 
+					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
 	                    
-	                    add_settings_field($month . "-" . $price_row_no, '', false, 'apartment_one_cal', 'calendar' );
-	                    register_setting( 'apartment_one_cal', $month . "-" . $price_row_no);
+	                    register_setting( 'apartment-one-cal', $input_field_id);
 	                    
 						$data .= "</tr><tr class='day_row'>"; // start a new row
 					    $wk_day_num=0;
@@ -436,8 +442,12 @@ class OWAC_Calendar_Settings
 				    }
 				    if($wk_day_num==7)
 				    {
+				        $input_field_id = $month . "-" . $price_row_no;
+				        
 				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><input type='text' id='" . $month . "-" . $price_row_no . "'></td>"; 
+				        
+				        register_setting( 'apartment-one-cal', $input_field_id);
+					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
 				    }
 				    $wk_day_num ++;
 				    $beg_month_val++;
@@ -492,21 +502,18 @@ class OWAC_Calendar_Settings
 		
 		$data .= "</div>";
 		
-		settings_fields( 'apartment_one_cal' );
-		do_settings_sections( 'apartment_one_cal' );
 		return $data;
     }
-
 
     public function settings_page_content()
     {
         ?>
         <div class="wrap">
-            <h1>Apartment 1</h1>
-            <form method="post">
-               <?php $OWAC_calendar_front = new OWAC_Calendar_Settings();
-    		   echo $OWAC_calendar_front->OWAC_calendar_front();?>
-    		   <?php submit_button(); ?>
+            <form method="post" action="options.php">
+               <?php 
+    		   settings_fields( 'apartment-one-cal' );
+		       do_settings_sections( 'apartment-one-cal' );
+    		   submit_button(); ?>
             </form>
         </div> 
         <?php 
