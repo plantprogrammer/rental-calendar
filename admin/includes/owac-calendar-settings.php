@@ -13,6 +13,9 @@ class OWAC_Calendar_Settings
     public function setup_sections()
     {
         add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
+        add_settings_section( 'calendar', 'Apartment 1 Calendar', array($this, "output_calendar"), 'apartment-one-cal' );
     }
     
     public function output_calendar()
@@ -23,7 +26,10 @@ class OWAC_Calendar_Settings
     
     public function create_settings_page()
     {
-        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment-one-cal",array($this,"settings_page_content"));
+        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment-one-cal",function() {$this->settings_page_content("one");});
+        add_submenu_page("availabilitycalendar","Apartment 2 Calendar","Apartment 2 Calendar","manage_options","apartment-two-cal",function() {$this->settings_page_content("two");});
+        add_submenu_page("availabilitycalendar","Apartment 3 Calendar","Apartment 3 Calendar","manage_options","apartment-three-cal",function() {$this->settings_page_content("three");});
+        add_submenu_page("availabilitycalendar","Apartment 4 Calendar","Apartment 4 Calendar","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");});
     }
     
     private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
@@ -505,19 +511,20 @@ class OWAC_Calendar_Settings
 		return $data;
     }
 
-    public function settings_page_content()
+    public function settings_page_content($name)
     {
         ?>
         <div class="wrap">
             <form method="post" action="options.php">
                <?php 
-    		   settings_fields( 'apartment-one-cal' );
-		       do_settings_sections( 'apartment-one-cal' );
-    		   submit_button(); ?>
+    		   settings_fields( 'apartment-' . $name . '-cal' );
+		       do_settings_sections( 'apartment-' . $name . '-cal' );
+    		   submit_button();?>
             </form>
         </div> 
         <?php 
     }
+    
 }
 
 new OWAC_Calendar_Settings();
