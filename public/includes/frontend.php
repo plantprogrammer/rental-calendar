@@ -5,7 +5,6 @@ class OWAC_calendar_front {
     {
 		global $wpdb;
 		add_shortcode('availabilitycalendar', array($this, 'OWAC_calendar_front_shortcode'));
-		
 		include_once( plugin_dir_path( __FILE__ ) . '../../vendor/advanced-custom-fields/acf.php' );
     }
 	
@@ -380,10 +379,12 @@ class OWAC_calendar_front {
 					}
 					$adj='';
 					$wk_day_num ++;
+					
+					$input_field_id = $apartment_short . "-" . $month . "-" . $price_row_no;
+					
 					if($wk_day_num==7)
 					{
-					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><span class='price'>€$amt</span></td>"; 
+					    $data .= $adj."<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
 						$data .= "</tr><tr class='day_row'>"; // start a new row
 					    $wk_day_num=0;
 						$price_row_no++;
@@ -412,7 +413,7 @@ class OWAC_calendar_front {
 				    if($wk_day_num==7)
 				    {
 				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><span class='price'>€$amt</span></td>"; 
+					    $data .= $adj."<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
 				    }
 				    $wk_day_num ++;
 				    $beg_month_val++;
@@ -472,7 +473,7 @@ class OWAC_calendar_front {
 									$data .= "</li>";
 								}
 							}
-							
+			    			
 					$data .= "</ul>
 							</div>";
 				}
@@ -483,5 +484,6 @@ class OWAC_calendar_front {
 		
 		return $data;
     }
+
 }
 $OWAC_calendar_front = new OWAC_calendar_front();
