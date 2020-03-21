@@ -8,16 +8,12 @@ class OWAC_calendar_front {
 		include_once( plugin_dir_path( __FILE__ ) . '../../vendor/advanced-custom-fields/acf.php' );
     }
 	
-	private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$category_short,$apartment_short){	
+	private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$apartment_short){	
 		$return_value = "";
 		global $wpdb;
 		$contactus_table = $wpdb->prefix."OWAC_event";
-		if(!empty($category_short)){
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0'" . " AND apt_id =" . $apartment_short);
-		}else{
-			$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
-		}
-		
+		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
+
 		for($i=0;$i<count($total_pages_sql);$i++){
 			$ec_category_table = $wpdb->prefix."OWAC_category";
 			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table where cat_id = ". $total_pages_sql[$i]->cat_id. " AND `flag`='0'");
@@ -39,8 +35,7 @@ class OWAC_calendar_front {
 	
     public function OWAC_calendar_front_shortcode($atts = array())
     {	
-		$atts = shortcode_atts(array('category' => '','apartment' => '','language' => ''), $atts);
-		$category_short = $atts['category'];
+		$atts = shortcode_atts(array('apartment' => '','language' => ''), $atts);
 	    $apartment_short = $atts['apartment'];
 	    $language_short = $atts['language'];
 
@@ -51,11 +46,7 @@ class OWAC_calendar_front {
 		$contactus_table = $wpdb->prefix."OWAC_event";
 		$total_pages_sql = $wpdb->get_results("SELECT * FROM $contactus_table WHERE 1 AND `flag`='0'" . " AND apt_id =" . $apartment_short);
 		$ec_category_table = $wpdb->prefix."OWAC_category";
-		if($category_short != ""){
-			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `cat_id` IN (".$category_short.") AND `flag`='0' ORDER BY `cat_ord_num` ASC");
-		}else{
-			$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `flag`='0' ORDER BY `cat_ord_num` ASC");
-		}
+		$ec_category_sql = $wpdb->get_results("SELECT * FROM $ec_category_table WHERE 1 AND `flag`='0' ORDER BY `cat_ord_num` ASC");
 		$settings_options = get_option( 'OWAC_settings_option' );
 		$display_calendar_month = preg_replace("/[^0-9\.]/", '', $settings_options['display_calendar_month']);
 		
@@ -275,13 +266,10 @@ class OWAC_calendar_front {
 				$month =date("m");  // Month 
 				$month_cur =intval(date("m")); // Month set
 				$dateObject = DateTime::createFromFormat('!m', $m);
-				//$monthName = utf8_encode(strftime("%B", mktime(0,0,0,$m+1,0,0)));
 				$mName=strftime("%B", mktime(0,0,0,$m+1,0,0));
-				$encoding = mb_detect_encoding($mName, "auto" );
 				$monthName =mb_convert_encoding($mName, 'UTF-8','Windows-1252');
 		
 				$month = $dateObject->format('m');
-				$d= 2; // To Finds today's date
 				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 		/**
 		 * This will calculate the week day of the first day of the month
@@ -319,7 +307,7 @@ class OWAC_calendar_front {
 			        
 			        $month_pre = $m - 1;
 			        $empty = "";
-					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$category_short,$apartment_short);
+					$set_event = $this->OWAC_check_date($pv_r,$cur_day_val,$empty,$wk_day_num,$month_pre,$apartment_short);
 					if(!empty($set_event)){
 						$adj .= $set_event;
 					}else{
@@ -359,7 +347,7 @@ class OWAC_calendar_front {
 		/**
 		* Showing name of the days of the week
 		*/			
-				$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span id='Price'>Price</span></th></tr><tr class='day_row'>";
+				$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span class='price'>Price</span></th></tr><tr class='day_row'>";
 		/**
 		* Starting of the Days
 		*/	    
@@ -371,7 +359,7 @@ class OWAC_calendar_front {
 		/**
 		* Call to Function
 		*/				
-					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$category_short,$apartment_short);
+					$set_event = $this->OWAC_check_date($pv_r,$i,$adj,$wk_day_num,$m,$apartment_short);
 					if(!empty($set_event)){
 						$data .= $set_event;
 					}else{
@@ -391,33 +379,29 @@ class OWAC_calendar_front {
 					}
 				}
 				$beg_month_val = 1;
-				while ($wk_day_num <= 7 & $wk_day_num != 0)
+				if ($wk_day_num != 0)
 				{
-				    
-				    if ($wk_day_num < 7)
-				    {
-    				    $pv="'$monthAfter'".","."'$beg_month_val'".","."'$year'";
-    					$pv_r="$beg_month_val"."-"."$monthAfter"."-"."$year";
-    					$pv_r=strtotime($pv_r);
-    					$sday="class='disable extradays'";
-    			        
-    			        $month_aft = $m + 1;
-    			        $empty = "";
-    					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$category_short,$apartment_short);
-    					if(!empty($set_event)){
-    						$data .= $set_event;
-    					}else{
-    						$data .= "<td ".$sday."><span>$beg_month_val</span></td>";
-    					}
-				    }
-				    if($wk_day_num==7)
-				    {
-				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
-					    $data .= $adj."<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
-				    }
-				    $wk_day_num ++;
-				    $beg_month_val++;
-				}
+    				while ($wk_day_num <= 7)
+    				{    				    
+        				    $pv="'$monthAfter'".","."'$beg_month_val'".","."'$year'";
+        					$pv_r="$beg_month_val"."-"."$monthAfter"."-"."$year";
+        					$pv_r=strtotime($pv_r);
+        					$sday="class='disable extradays'";
+        			        
+        			        $month_aft = $m + 1;
+        			        $empty = "";
+        					$set_event = $this->OWAC_check_date($pv_r,$beg_month_val,$empty,$wk_day_num,$month_aft,$apartment_short);
+        					if(!empty($set_event)){
+        						$data .= $set_event;
+        					}else{
+        						$data .= "<td ".$sday."><span>$beg_month_val</span></td>";
+        					}
+    				}
+    				    $wk_day_num ++;
+    				    $beg_month_val++;
+    			}
+        		$amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
+        		$data .= $adj."<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
 				
 				$data .= "</tr></table></td>";
 				$row_no=$row_no+1;
@@ -438,7 +422,6 @@ class OWAC_calendar_front {
 				if($settings_options['category_display'] == 'yes'){	
 					$data .= "<div class='event-calendar'>
 								<ul>";
-							if($category_short == ''){
 								for($i=0;$i<count($ec_category_sql);$i++){
 									$cat_color = $ec_category_sql[$i]->cat_color;
 									$cat_name = "";
@@ -455,28 +438,11 @@ class OWAC_calendar_front {
 										$data .= "<span class='event-name'>".$cat_name."</span>";
 									$data .= "</li>";
 								}	
-							}else{
-								for($i=0;$i<count($ec_category_sql);$i++){
-									$cat_color = $ec_category_sql[$i]->cat_color;
-									$cat_name="";
-									if ($language_short == "EN")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_eng;
-									}
-									else if ($language_short == "FR")
-									{
-									    $cat_name = $ec_category_sql[$i]->cat_name_fre;
-									}
-									$data .= "<li>";
-										$data .= "<span class='cat_color' style='background-color:".$cat_color." !important'></span>";
-										$data .= "<span class='event-name'>".$cat_name."</span>";
-									$data .= "</li>";
-								}
 							}
-			    			
+			 	
 					$data .= "</ul>
 							</div>";
-				}
+				
 		$data .= "</div>";
 		
 		$data .= "</div>";
