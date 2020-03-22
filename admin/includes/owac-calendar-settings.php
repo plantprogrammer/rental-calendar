@@ -6,7 +6,7 @@ class OWAC_Calendar_Settings
     {
         add_action("admin_menu", array($this,"create_settings_page"));
         add_action( 'admin_init', array( $this, 'setup_sections' ) );
-	add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
+	    add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("2");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("3");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("4");});   
@@ -29,10 +29,10 @@ class OWAC_Calendar_Settings
     
     public function create_settings_page()
     {
-        add_submenu_page("availabilitycalendar","Apartment 1 Calendar","Apartment 1 Calendar","manage_options","apartment-one-cal",function() {$this->settings_page_content("one");});
-        add_submenu_page("availabilitycalendar","Apartment 2 Calendar","Apartment 2 Calendar","manage_options","apartment-two-cal",function() {$this->settings_page_content("two");});
-        add_submenu_page("availabilitycalendar","Apartment 3 Calendar","Apartment 3 Calendar","manage_options","apartment-three-cal",function() {$this->settings_page_content("three");});
-        add_submenu_page("availabilitycalendar","Apartment 4 Calendar","Apartment 4 Calendar","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");});
+        add_submenu_page("availabilitycalendar","Apartment 1 Prices","Apartment 1 Prices","manage_options","apartment-one-cal",function() {$this->settings_page_content("one");},6);
+        add_submenu_page("availabilitycalendar","Apartment 2 Prices","Apartment 2 Prices","manage_options","apartment-two-cal",function() {$this->settings_page_content("two");},7);
+        add_submenu_page("availabilitycalendar","Apartment 3 Prices","Apartment 3 Prices","manage_options","apartment-three-cal",function() {$this->settings_page_content("three");},8);
+        add_submenu_page("availabilitycalendar","Apartment 4 Prices","Apartment 4 Prices","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");},9);
     }
     
     private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$apartment_short){	
@@ -424,7 +424,6 @@ class OWAC_Calendar_Settings
 					if($wk_day_num==7)
 					{
 					    $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
-					    $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
 	                    
 	                    register_setting( 'apartment-' . $reg_setting_apt_num .'-cal', $input_field_id);
@@ -457,8 +456,6 @@ class OWAC_Calendar_Settings
 				    if($wk_day_num==7)
 				    {
 				        $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
-				        
-				        $amt = get_field($month . '_' . 'week_'.$price_row_no, 'option');
 				        
 				        register_setting( 'apartment-' . $reg_setting_apt_num . '-cal', $input_field_id);
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
