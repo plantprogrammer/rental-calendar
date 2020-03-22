@@ -32,11 +32,10 @@ class OWAC_Admin {
             
             add_submenu_page( 'availabilitycalendar', 'owaccategorylist', 'Category', 'manage_options', 'owaccategorylist', 'OWAC_category');
 			
-			add_submenu_page( 'availabilitycalendar', 'owacapt1', 'Apartment 1', 'manage_options', 'owacapt1', 'OWAC_apt1');
-			add_submenu_page( 'availabilitycalendar', 'owacapt2', 'Apartment 2', 'manage_options', 'owacapt2', 'OWAC_apt2');
-			add_submenu_page( 'availabilitycalendar', 'owacapt3', 'Apartment 3', 'manage_options', 'owacapt3', 'OWAC_apt3');
-			add_submenu_page( 'availabilitycalendar', 'owacapt4', 'Apartment 4', 'manage_options', 'owacapt4', 'OWAC_apt4');
-
+			add_submenu_page( 'availabilitycalendar', 'Apartment 1 Calendar', 'Apartment 1 Calendar', 'manage_options', 'owacapt1', 'OWAC_apt1');
+			add_submenu_page( 'availabilitycalendar', 'Apartment 2 Calendar', 'Apartment 2 Calendar', 'manage_options', 'owacapt2', 'OWAC_apt2');
+			add_submenu_page( 'availabilitycalendar', 'Apartment 3 Calendar', 'Apartment 3 Calendar', 'manage_options', 'owacapt3', 'OWAC_apt3');
+			add_submenu_page( 'availabilitycalendar', 'Apartment 4 Calendar', 'Apartment 4 Calendar', 'manage_options', 'owacapt4', 'OWAC_apt4');
 		}
 		add_action('admin_menu', 'owac_admin_menu');
 		
