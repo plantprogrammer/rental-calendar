@@ -410,7 +410,7 @@
 						(options.min && year < min_year) ||
 						(options.max && year > max_year)
 					) {
-						dom_add_class(year_element, 'pmu-disabled');
+						
 					} else if (is_year_selected(year)) {
 						dom_add_class(year_element, 'pmu-selected');
 					}
@@ -452,7 +452,7 @@
 							)
 						)
 					) {
-						dom_add_class(month_element, 'pmu-disabled');
+						
 					} else if (is_months_selected(current_year, month)) {
 						dom_add_class(month_element, 'pmu-selected');
 					}
@@ -493,9 +493,6 @@
 					from_user = options.render(new Date(local_date)) || {};
 					// We only reset time for this value in order to deal with Summer/Winter time, but changing `local_date` itself will break days incrementing
 					val       = reset_time(new Date(local_date)).valueOf();
-					disabled  =
-						(options.min && options.min > local_date) ||
-						(options.max && options.max < local_date);
 					selected  =
 						options.date.valueOf() === val ||
 						(
@@ -507,9 +504,7 @@
 						(
 							options.mode === 'range' && val >= options.date[0] && val <= options.date[1]
 						);
-					if (from_user.disabled || (!('disabled' in from_user) && disabled)) {
-						dom_add_class(day_element, 'pmu-disabled');
-					} else if (from_user.selected || (!('selected' in from_user) && selected)) {
+					if (from_user.selected || (!('selected' in from_user) && selected)) {
 						dom_add_class(day_element, 'pmu-selected');
 					}
 					if (val === today) {
@@ -588,6 +583,7 @@
 					break;
 				case 'd':
 				case 'e':
+				case 't':
 					d = parseInt(parts[i], 10);
 					break;
 				case 'm':
@@ -706,6 +702,10 @@
 				case 'S':
 					part = (sec < 10) ? ("0" + sec) : sec;
 					break;
+				case 't':
+					// Calculate the last day of the month
+					part = new Date(y, m + 1, 0).getDate();
+					break;
 				case 'u':
 					part = w + 1;
 					break;
@@ -794,7 +794,7 @@
 		if (!dom_has_class(element, 'pmu-button')) {
 			element = dom_closest_parent(element, '.pmu-button');
 		}
-		if (!dom_has_class(element, 'pmu-button') || dom_has_class(element, 'pmu-disabled')) {
+		if (!dom_has_class(element, 'pmu-button')) {
 			return false;
 		}
 		event.preventDefault();
@@ -1326,7 +1326,7 @@
 		select_day                : true,
 		view                      : 'days',
 		calendars                 : 1,
-		format                    : 'd-m-Y',
+		format                    : 'm-d-Y',
 		title_format              : 'B, Y',
 		position                  : 'bottom',
 		class_name                : '',
