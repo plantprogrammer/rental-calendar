@@ -13,7 +13,7 @@ class AddAvailabilityCalendar {
         add_submenu_page( 'Hidden', 'Apartment 1 Addition', 'Availability Add', 'manage_options', 'owacapt1add', array( $this, 'add_availability_calendar_create_admin_page' ));
 		add_submenu_page( 'Hidden', 'Apartment 2 Addition', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
 		add_submenu_page( 'Hidden', 'Apartment 3 Addition', 'Availability Add', 'manage_options', 'owacapt3add', array( $this, 'add_availability_calendar_create_admin_page' ));
-		add_submenu_page( 'Hidden', 'Apartment 4 Addition', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'Apartment 4 Addition', 'Availability Add', 'manage_options', 'owacapt4add', array( $this, 'add_availability_calendar_create_admin_page' ));
 	}
 
 	public function add_availability_calendar_create_admin_page() {
