@@ -167,9 +167,11 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 			return '';
 		}
 		$apt_id = $_GET['page'];
+		$apt_num = $_GET['page'][7];
+		
 		$edit_link = add_query_arg(
 			array(
-				'page' => 'owacapt2add',
+				'page' => 'owacapt'. $apt_num . "add",
 				'edit' => absint( $item->ev_id ),
 			),
 			menu_page_url('availability-calendar', false )
