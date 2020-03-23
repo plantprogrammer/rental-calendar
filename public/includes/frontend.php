@@ -267,7 +267,16 @@ class OWAC_calendar_front {
 				$dateObject = DateTime::createFromFormat('!m', $m);
 				$mName=strftime("%B", mktime(0,0,0,$m+1,0,0));
 				$monthName =mb_convert_encoding($mName, 'UTF-8','Windows-1252');
-		
+				
+				if ($language_short == "FR")
+				{
+    				$monthName = str_replace(
+                    array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
+                    array('Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'),
+                    $monthName
+                    );
+				}
+				
 				$month = $dateObject->format('m');
 				$no_of_days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 		/**
