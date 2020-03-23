@@ -401,7 +401,7 @@ class OWAC_Calendar_Settings
 		/**
 		* Showing name of the days of the week
 		*/			
-				$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span id='Price'>Price</span></th></tr><tr class='day_row'>";
+				$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span class='price'>Price</span></th></tr><tr class='day_row'>";
 		/**
 		* Starting of the Days
 		*/	    
