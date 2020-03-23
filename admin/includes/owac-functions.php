@@ -323,6 +323,12 @@ if(isset($_POST['owac_add']) && !empty($_POST['owac_add'])){
 		
 		if($values['from_date'] != '' && $values['to_date'] != '' && $values['cat_id'] != ''){
 			
+			$from_date = DateTime::createFromFormat('m-d-Y', $values['from_date']);
+            $values['from_date'] = $from_date->format('d-m-Y');
+			
+			$to_date = DateTime::createFromFormat('m-d-Y', $values['to_date']);
+            $values['to_date'] = $to_date->format('d-m-Y');
+			
 			$add = new OWAC_Availability();
 			
 		   	$add->insert($values);
@@ -361,6 +367,12 @@ if(isset($_POST['owac_update']) && !empty($_POST['owac_update'])){
 		$values = $_POST['add_availability_calendar'];
 
 		if($values['from_date'] != '' && $values['to_date'] != '' && $values['cat_id'] != ''){
+			
+			$from_date = DateTime::createFromFormat('m-d-Y', $values['from_date']);
+            $values['from_date'] = $from_date->format('d-m-Y');
+			
+			$to_date = DateTime::createFromFormat('m-d-Y', $values['to_date']);
+            $values['to_date'] = $to_date->format('d-m-Y');
 			
 			$add = new OWAC_Availability();
 			
