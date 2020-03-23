@@ -122,7 +122,7 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 	
 	public function column_from_date( $item ) {
 		$output = sprintf(__( '%s', 'availability-calendar' ),
-			esc_html( date('d-m-Y', $item->from_date) )
+			esc_html( date('m-d-Y', $item->from_date) )
 		);
 		
 		$output = sprintf( '<strong>%s</strong>', $output );
@@ -131,7 +131,7 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 	
 	public function column_to_date( $item ) {
 		$output = sprintf(__( '%s', 'availability-calendar' ),
-			esc_html( date('d-m-Y', $item->to_date) )
+			esc_html( date('m-d-Y', $item->to_date) )
 		);
 		
 		$output = sprintf( '<strong>%s</strong>', $output );
@@ -251,6 +251,7 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 						$this->owac_availability_trash_chk(intval($check_id)); 
 					}
 					//Address
+					//investigate
 					header('Location: admin.php?page=availabilitycalendar');	
 				}
                 break;
