@@ -75,16 +75,18 @@ function OWAC_Availability_list(){
 	
 	$OWAC_list_Table->process_bulk_action();
 	
+	
 ?>
 <div class="wrap owac-main">
 	
 	    <form id="form" method="POST">
 		
-		<?php $apt_id = $_POST["apt_id"];?>
+		<?php $apt_id = $_POST["apt_id"];
+		$page = $_GET["page"];?>
 		
 		<h1 class="wp-heading-inline"><?php echo "Apartment " . $apt_id?></h1>
 		
-		<a href="<?php echo esc_url('admin.php?page=availabilityadd&apt_id='. $apt_id); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'availability-calendar' ); ?></a>
+		<a href="<?php echo esc_url('admin.php?page=' . $page . 'add&apt_id='. $apt_id); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'availability-calendar' ); ?></a>
 		
 		<hr class="wp-header-end">
 		
@@ -92,7 +94,7 @@ function OWAC_Availability_list(){
 		
 			<li class="all">
 			
-				<a href="<?php echo esc_url('admin.php?page=availabilitycalendar'); ?>"><?php esc_html_e( 'All', 'availability-calendar' ); ?>
+				<a href="<?php echo esc_url('admin.php?page=' . $page); ?>"><?php esc_html_e( 'All', 'availability-calendar' ); ?>
 				
 					<span class="count">(<?php esc_html_e( $OWAC_list_Table->count_all(), 'availability-calendar' ); ?>)</span>
 					
@@ -102,7 +104,7 @@ function OWAC_Availability_list(){
 			
 			<li class="trash">
 			
-				<a href="<?php echo esc_url('admin.php?page=availabilitycalendar&Trash=Trash'); ?>"><?php esc_html_e( 'Trash', 'availability-calendar' ); ?> 
+				<a href="<?php echo esc_url('admin.php?page=' . $_GET["page"] . '&Trash=Trash'); ?>"><?php esc_html_e( 'Trash', 'availability-calendar' ); ?> 
 				
 					<span class="count">(<?php esc_html_e( $OWAC_list_Table->count_trash(), 'availability-calendar' ); ?>)</span>
 				
@@ -132,8 +134,6 @@ function OWAC_Availability_list(){
  */
 function OWAC_Availability_list_trash(){
 
-    echo $_POST['apt_id'];
-
     $OWAC_list_trash_Table=new OWAC_Availability_list_trash_Table();
 	
 	$OWAC_list_trash_Table->prepare_items();
@@ -145,9 +145,11 @@ function OWAC_Availability_list_trash(){
 
 	<form id="form" method="post">
 	
-		<h1 class="wp-heading-inline"><?php esc_html_e( 'Availability Calendar Listing', 'availability-calendar' ); ?></h1>
+	    <?php $page = $_GET["page"];$apt_id = $page[7];?>
+	
+		<h1 class="wp-heading-inline"><?php esc_html_e("Apartment " . $apt_id . " Trash", 'availability-calendar' ); ?></h1>
 		
-		<a href="<?php echo esc_url('admin.php?page=availabilityadd'); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'availability-calendar' ); ?></a>
+		<a href="<?php echo esc_url('admin.php?page=' . $page . 'add&apt_id='. $apt_id); ?>" class="page-title-action"><?php esc_html_e( 'Add New', 'availability-calendar' ); ?></a>
 		
 		<hr class="wp-header-end">
 		
@@ -155,7 +157,7 @@ function OWAC_Availability_list_trash(){
 		
 			<li class="all">
 			
-				<a href="<?php echo esc_url('admin.php?page=availabilitycalendar'); ?>"><?php esc_html_e( 'All', 'availability-calendar' ); ?> 
+				<a href="<?php echo esc_url('admin.php?page=' . $page); ?>"><?php esc_html_e( 'All', 'availability-calendar' ); ?> 
 					
 					<span class="count">(<?php esc_html_e(  $OWAC_list_trash_Table->count_all(), 'availability-calendar' ); ?>)</span>
 				
@@ -164,7 +166,7 @@ function OWAC_Availability_list_trash(){
 			</li>
 			
 			<li class="trash">
-				<a href="<?php echo esc_url('admin.php?page=availabilitycalendar&Trash=Trash'); ?>"><?php esc_html_e( 'Trash', 'availability-calendar' ); ?> 
+				<a href="<?php echo esc_url('admin.php?page=' . $page . '&Trash=Trash'); ?>"><?php esc_html_e( 'Trash', 'availability-calendar' ); ?> 
 					
 					<span class="count">(<?php esc_html_e(  $OWAC_list_trash_Table->count_trash(), 'availability-calendar' ); ?>)</span>
 				

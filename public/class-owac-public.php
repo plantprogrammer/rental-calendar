@@ -23,8 +23,8 @@ class OWAC_Public {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( 'owac-js', plugin_dir_url( __FILE__ ) . 'js/owac.js', array( 'jquery' ), $this->version, true );
-		
-	}
+		//new content	
+		}
 	
 	public function OWAC_Public_File_Add() {
 		

@@ -8,7 +8,12 @@ class AddAvailabilityCalendar {
 	}
 
 	public function add_availability_calendar_plugin_page() {
-		add_submenu_page( 'Hidden', 'availabilityadd', 'Availability Add', 'manage_options', 'availabilityadd', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'availabilityadd', array( $this, 'add_availability_calendar_create_admin_page' ));
+		
+        add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt1add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt3add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
 	}
 
 	public function add_availability_calendar_create_admin_page() {
@@ -28,13 +33,15 @@ class AddAvailabilityCalendar {
 			$this->add_availability_calendar = $owac_item[0];
 			
 			$submitbtn = "owac_update";
-		}		
+		}
+		
+		$apt_id = $_GET['page'][7];
+		$page = "owacapt" . $apt_id;
 ?>
 
 		<div class="wrap owac">
 			<p></p>
 			<?php settings_errors(); ?>
-			<?php echo $_GET["apt_id"];?>
 			<form action="" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">				
 				<?php
 					settings_fields( 'add_availability_calendar' );
@@ -46,7 +53,7 @@ class AddAvailabilityCalendar {
 						<input type="hidden" name="ev_id" id="ev_id" value="<?php esc_html_e( $this->add_availability_calendar->ev_id, 'availability-calendar' ); ?>">
 					<?php } ?>
 					<input type="submit" name="<?php esc_html_e( $submitbtn, 'availability-calendar' ); ?>" class="button button-primary" value="Submit">
-					<a href="<?php echo esc_url('admin.php?page=availabilitycalendar'); ?>"><input action="action" type="button" name="cancel" class="button button-primary" value="cancel"></a>
+					<a href="<?php echo esc_url('admin.php?page=' . $page); ?>"><input action="action" type="button" name="cancel" class="button button-primary" value="cancel"></a>
 				</p>
 			</form>
 		</div>

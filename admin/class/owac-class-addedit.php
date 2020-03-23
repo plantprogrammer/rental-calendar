@@ -40,7 +40,7 @@ class OWAC_Availability{
 		   	function owac_error_notice() {
 		?>
 			<div class="error notice">
-				<p><?php _e( 'You have not proper fill fielda!', 'availability-calendar' ); ?></p>
+				<p><?php _e( 'You have not properly filled fields!', 'availability-calendar' ); ?></p>
 			</div>	
 		<?php
 			}
@@ -56,7 +56,7 @@ class OWAC_Availability{
 		$date = time();
 		$from_date = strtotime($updatevalues['from_date']);
 		$to_date = strtotime($updatevalues['to_date']);
-		
+		$apt_id = $_GET['page'];
 		$query = $wpdb->update(
 			$table_prefix, 
 				array(
@@ -71,10 +71,10 @@ class OWAC_Availability{
 
 		if(!empty($query)){
 		   $success = "Update Success";
-		   header('Location: admin.php?page=availabilitycalendar&updatesuccess=1');
+		   header('Location: admin.php?page=owacapt' . $apt_id[7] . '&updatesuccess=1');
 		   exit();
 		} else {
-		   header('Location: admin.php?page=availabilitycalendar&updateerror=1');
+		   header('Location: admin.php?page=owacapt' . $apt_id[7] . '&updateerror=1');
 		   exit();		
 		}
     }

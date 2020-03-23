@@ -29,8 +29,8 @@ class OWAC_Admin_Settings {
 		require_once OWAC_ADMINDIR . 'includes/owac-settings.php';
 		require_once OWAC_ADMINDIR . 'includes/owac-add.php';
 		require_once OWAC_ADMINDIR . 'includes/owac-category-add.php';
-		require_once OWAC_ADMINDIR . 'includes/owac-prices.php';
 		require_once OWAC_ADMINDIR . 'includes/owac-calendars.php';
+		require_once OWAC_ADMINDIR . 'includes/owac-calendar-settings.php';
 		
 		function OWAC_category() { 
 			if(isset($_GET['Trash']) && !empty($_GET['Trash'])){ 

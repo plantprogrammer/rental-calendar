@@ -8,7 +8,7 @@ class OWAC_Settings {
 	}
 
 	public function settings_add_plugin_page() {
-		add_submenu_page( 'availabilitycalendar', 'settings', 'Settings', 'manage_options', 'settings', array( $this, 'settings_create_admin_page' ));
+		add_submenu_page( 'owacapt1', 'settings', 'Settings', 'manage_options', 'settings', array( $this, 'settings_create_admin_page' ));
 	}
 
 	public function settings_create_admin_page() {

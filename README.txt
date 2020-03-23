@@ -1,5 +1,5 @@
-=== Availability Calendar ===
-Contributors: offshorewebmaster
+﻿=== Availability Calendar ===
+Contributors: offshorewebmaster ian
 Tags: availability calendar, holiday, event, working days, personal calendar 
 Donate link: https://www.offshorewebmaster.com/donate.html
 Requires at least: 3.5

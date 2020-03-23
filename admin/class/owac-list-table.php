@@ -166,21 +166,21 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 		if ( $column_name !== $primary ) {
 			return '';
 		}
-
+		$apt_id = $_GET['page'];
 		$edit_link = add_query_arg(
 			array(
-				'page' => 'availabilityadd',
+				'page' => 'owacapt2add',
 				'edit' => absint( $item->ev_id ),
 			),
-			menu_page_url( 'availability-calendar', false )
+			menu_page_url('availability-calendar', false )
 		);
 		
 		$trash_link = add_query_arg(
 			array(
-				'page' => 'availabilitycalendar',
+				'page' => $apt_id,
 				'trash' => absint( $item->ev_id ),
 			),
-			menu_page_url( 'availability-calendar', false )
+			menu_page_url('availability-calendar', false )
 		);
 		
 		$actions = array(
@@ -250,6 +250,7 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 						//Set trash
 						$this->owac_availability_trash_chk(intval($check_id)); 
 					}
+					//Address
 					header('Location: admin.php?page=availabilitycalendar');	
 				}
                 break;
@@ -265,10 +266,26 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 	
 	public function count_all() {
 		global $wpdb;
+		$apt_id = "";
+		switch ($_GET["page"])
+		{
+		    case "owacapt1":
+		        $apt_id = "1";
+		        break;
+		    case "owacapt2":
+		        $apt_id = "2";
+		        break;
+		    case "owacapt3":
+		        $apt_id = "3";
+		        break;
+		    case "owacapt4":
+		        $apt_id = "4";
+		        break;
+		}
 		$count_all = $wpdb->get_var(
 					"SELECT COUNT(*) FROM 
 						`{$wpdb->prefix}OWAC_event` 
-					WHERE 1 AND `flag`='0'"
+					WHERE 1 AND `flag`='0' AND apt_id=" . $apt_id
 				);
 	
         return $count_all;
@@ -276,10 +293,28 @@ Class OWAC_Availability_list_Table extends WP_List_Table
 	
 	public function count_trash() {
 		global $wpdb;
+		
+		$apt_id = "";
+		switch ($_GET["page"])
+		{
+		    case "owacapt1":
+		        $apt_id = "1";
+		        break;
+		    case "owacapt2":
+		        $apt_id = "2";
+		        break;
+		    case "owacapt3":
+		        $apt_id = "3";
+		        break;
+		    case "owacapt4":
+		        $apt_id = "4";
+		        break;
+		}
+		
 		$count_trash = $wpdb->get_var(
 						"SELECT COUNT(*) FROM 
 							`{$wpdb->prefix}OWAC_event` 
-						WHERE 1 AND `flag`='1'"
+						WHERE 1 AND `flag`='1' AND apt_id=" . $apt_id 
 					);
 		
         return $count_trash;

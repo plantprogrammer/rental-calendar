@@ -7,7 +7,6 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 {
 	public static function define_columns() {
 		$columns = array(
-		    'apa_id' => __( 'Apartment Number', 'availability-calendar' ),
 			'cb' => '<input type="checkbox" />',
 			'from_date' => __( 'From Date', 'availability-calendar' ),
 			'to_date' => __( 'To Date', 'availability-calendar' ),
@@ -31,7 +30,6 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 	
 	public function get_columns() {
 		$columns = array(
-		    'apa_id' => __( 'Apartment Number', 'availability-calendar' ),
 			'cb' => '<input type="checkbox" />',
 			'from_date' => __( 'From Date', 'availability-calendar'),
 			'to_date' => __( 'To Date', 'availability-calendar' ),
@@ -83,11 +81,14 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 		
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'OWAC_event';
+		
+		$apt_id = $_GET["page"][7];
+		
 		$this->items = $wpdb->get_results(
 							$wpdb->prepare(
 								"SELECT * from 
 									`{$wpdb->prefix}OWAC_event` 
-								WHERE 1 AND `flag`='1' 
+								WHERE 1 AND `flag`='1' AND apt_id=" . $apt_id . "
 								ORDER BY ".$args['orderby']." ".$args['order']." LIMIT %d, %d",
 								$args['offset'],
 								$args['posts_per_page']
@@ -142,16 +143,16 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 		global $wpdb;
 		$get_cat_name = $wpdb->get_results(
 							$wpdb->prepare(
-								"SELECT cat_name from 
+								"SELECT cat_name_eng from 
 									`{$wpdb->prefix}OWAC_category` 
 								WHERE `cat_id`=%d AND `flag`='0'",
 								$item->cat_id
 							)
 						);
 		
-		if(isset($get_cat_name[0]->cat_name) && !empty($get_cat_name[0]->cat_name)){
+		if(isset($get_cat_name[0]->cat_name_eng) && !empty($get_cat_name[0]->cat_name_eng)){
 			$output = sprintf(__( '%s', 'availability-calendar' ),
-				esc_html( $get_cat_name[0]->cat_name )
+				esc_html( $get_cat_name[0]->cat_name_eng )
 			);
 		}else{
 			$output = "";
@@ -163,13 +164,15 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 	
 	protected function handle_row_actions( $item, $column_name, $primary ) {
 		
+		$page = $_GET["page"];
+		
 		if ( $column_name !== $primary ) {
 			return '';
 		}
 
 		$edit_link = add_query_arg(
 			array(
-				'page' => 'availabilitycalendar&Trash=Trash',
+				'page' => $page . '&Trash=Trash',
 				'restore' => absint( $item->ev_id ),
 			),
 			menu_page_url( 'availability-calendar', false )
@@ -177,7 +180,7 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 		
 		$trash_link = add_query_arg(
 			array(
-				'page' => 'availabilitycalendar&Trash=Trash',
+				'page' => $page . '&Trash=Trash',
 				'delete' => absint( $item->ev_id ),
 			),
 			menu_page_url( 'availability-calendar', false )
@@ -274,10 +277,13 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 	
 	public function count_all() {
 		global $wpdb;
+		
+		$apt_id = $_GET["page"][7];
+		
 		$count_all = $wpdb->get_var(
 					"SELECT COUNT(*) FROM 
 						`{$wpdb->prefix}OWAC_event` 
-					WHERE 1 AND `flag`='0'"
+					WHERE 1 AND `flag`='0' AND apt_id=" . $apt_id
 				);
 	
         return $count_all;
@@ -285,10 +291,13 @@ Class OWAC_Availability_list_trash_Table extends WP_List_Table
 	
 	public function count_trash() {
 		global $wpdb;
+		
+		$apt_id = $_GET["page"][7];
+		
 		$count_trash = $wpdb->get_var(
 						"SELECT COUNT(*) FROM 
 							`{$wpdb->prefix}OWAC_event` 
-						WHERE 1 AND `flag`='1'"
+						WHERE 1 AND `flag`='1' AND apt_id=" . $apt_id
 					);
 		
         return $count_trash;

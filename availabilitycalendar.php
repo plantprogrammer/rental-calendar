@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name:       Availability Calendar
+ * Plugin Name:       Apartment Availability Calendar
  
  * Plugin URI:        https://www.offshorewebmaster.com/availabilitycalendar
  
- * Description:       Availability Calendar Description A plugin that records post views and contains functions to easily list posts by popularity
+ * Description:       Helps Organize Apartment Avaialibility
  
  * Version:           1.1.2
  
- * Author:            Offshore Web Master
+ * Author:            Offshore Web Master (& Ian)
  
  * Author URI:        https://www.offshorewebmaster.com/
  
