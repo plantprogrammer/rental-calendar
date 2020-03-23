@@ -53,7 +53,7 @@ class AddAvailabilityCalendar {
 						<input type="hidden" name="ev_id" id="ev_id" value="<?php esc_html_e( $this->add_availability_calendar->ev_id, 'availability-calendar' ); ?>">
 					<?php } ?>
 					<input type="submit" name="<?php esc_html_e( $submitbtn, 'availability-calendar' ); ?>" class="button button-primary" value="Submit">
-					<a href="<?php echo esc_url('admin.php?page=' . $page); ?>"><input action="action" type="button" name="cancel" class="button button-primary" value="cancel"></a>
+					<a href="<?php echo esc_url('admin.php?page=' . $page); ?>"><input action="action" type="button" name="cancel" class="button button-primary" value="Cancel"></a>
 				</p>
 			</form>
 		</div>
