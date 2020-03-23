@@ -354,8 +354,15 @@ class OWAC_calendar_front {
 				$data .= "<table class='main owac owac_google_events' style='background-color: #".$settings_options['calendar_background_color']." !important;'><tr class='month_title'><td colspan=8 align=center><h3 style='background-color: #".$settings_options['month_background_color']." !important;; color: #".$settings_options['month_title_font_color']." !important;;'> $monthName $year</h3></td></tr>";
 		/**
 		* Showing name of the days of the week
-		*/			
-				$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span class='price'>Price</span></th></tr><tr class='day_row'>";
+		*/		
+				if ($language_short == "EN")
+				{
+					$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>M</span></th><th><span>T</span></th><th><span>W</span></th><th><span>T</span></th><th><span>F</span></th><th><span class='price'>Price</span></th></tr><tr class='day_row'>";
+				}
+				else if ($language_short =="FR")
+				{
+					$data .= "<tr class='day_title'><th><span>S</span></th><th><span>S</span></th><th><span>L</span></th><th><span>M</span></th><th><span>M</span></th><th><span>J</span></th><th><span>V</span></th><th><span class='price'>Tarifs</span></th></tr><tr class='day_row'>";
+				}
 		/**
 		* Starting of the Days
 		*/	    
