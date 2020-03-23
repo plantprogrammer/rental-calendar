@@ -68,9 +68,6 @@ class AddAvailabilityCalendar {
 						hide_on_select : true,
 						default_date : false,
 						render : function (date) {
-							if (date < now) {
-								return {disabled : true, class_name : 'date-in-past'};
-							}
 							return {};
 						}
 					});
@@ -81,9 +78,6 @@ class AddAvailabilityCalendar {
 						hide_on_select : true,
 						default_date : false,
 						render : function (date) {
-							if (date < now) {
-								return {disabled : true, class_name : 'date-in-past'};
-							}
 							return {};
 						}
 					});
@@ -101,7 +95,7 @@ class AddAvailabilityCalendar {
 
 		add_settings_section(
 			'add_availability_calendar_setting_section', // id
-			'Add Availability Calendar', // title
+			'Add to Apartment ' . $_GET["page"][7], // title
 			array( $this, 'add_availability_calendar_section_info' ), // callback
 			'add-availability-calendar-admin' // page
 		);
@@ -155,14 +149,14 @@ class AddAvailabilityCalendar {
 	public function from_date_callback() {
 		printf(
 			'<input class="regular-text from_date owacdate" type="text" name="add_availability_calendar[from_date]" id="from_date" value="%s" autocomplete="off" required readonly>',
-			isset( $this->add_availability_calendar->from_date ) ? esc_attr( date('d-m-Y', $this->add_availability_calendar->from_date)) : ''
+			isset( $this->add_availability_calendar->from_date ) ? esc_attr( date('m-d-Y', $this->add_availability_calendar->from_date)) : ''
 		);
 	}
 
 	public function to_date_callback() {
 		printf(
 			'<input class="regular-text to_date owacdate" type="text" name="add_availability_calendar[to_date]" id="to_date" value="%s" autocomplete="off" required readonly>',
-			isset( $this->add_availability_calendar->to_date ) ? esc_attr( date('d-m-Y', $this->add_availability_calendar->to_date)) : ''
+			isset( $this->add_availability_calendar->to_date ) ? esc_attr( date('m-d-Y', $this->add_availability_calendar->to_date)) : ''
 		);
 	}
 
