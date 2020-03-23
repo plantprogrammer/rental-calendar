@@ -10,10 +10,10 @@ class AddAvailabilityCalendar {
 	public function add_availability_calendar_plugin_page() {
 		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'availabilityadd', array( $this, 'add_availability_calendar_create_admin_page' ));
 		
-        add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt1add', array( $this, 'add_availability_calendar_create_admin_page' ));
-		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
-		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt3add', array( $this, 'add_availability_calendar_create_admin_page' ));
-		add_submenu_page( 'Hidden', 'owacapt1', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
+        add_submenu_page( 'Hidden', 'Apartment 1 Addition', 'Availability Add', 'manage_options', 'owacapt1add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'Apartment 2 Addition', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'Apartment 3 Addition', 'Availability Add', 'manage_options', 'owacapt3add', array( $this, 'add_availability_calendar_create_admin_page' ));
+		add_submenu_page( 'Hidden', 'Apartment 4 Addition', 'Availability Add', 'manage_options', 'owacapt2add', array( $this, 'add_availability_calendar_create_admin_page' ));
 	}
 
 	public function add_availability_calendar_create_admin_page() {
@@ -44,6 +44,7 @@ class AddAvailabilityCalendar {
 			<?php settings_errors(); ?>
 			<form action="" method="post" onsubmit="return validateForm()" enctype="multipart/form-data">				
 				<?php
+				    echo "<h3>Add to Apartment ". $apt_id . "</h3>";
 					settings_fields( 'add_availability_calendar' );
 					do_settings_sections( 'add-availability-calendar-admin' );
 					//submit_button();
@@ -95,7 +96,7 @@ class AddAvailabilityCalendar {
 
 		add_settings_section(
 			'add_availability_calendar_setting_section', // id
-			'Add to Apartment', // title
+			null, // title
 			array( $this, 'add_availability_calendar_section_info' ), // callback
 			'add-availability-calendar-admin' // page
 		);
