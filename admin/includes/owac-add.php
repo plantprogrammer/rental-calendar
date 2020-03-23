@@ -95,7 +95,7 @@ class AddAvailabilityCalendar {
 
 		add_settings_section(
 			'add_availability_calendar_setting_section', // id
-			'Add to Apartment ' . $_GET["page"][7], // title
+			'Add to Apartment', // title
 			array( $this, 'add_availability_calendar_section_info' ), // callback
 			'add-availability-calendar-admin' // page
 		);
