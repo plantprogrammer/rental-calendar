@@ -1,1 +1,5 @@
-
+jQuery(document).ready(function($)
+{
+  
+}
+);
