@@ -4,5 +4,6 @@ jQuery(document).ready(function($)
   {
     $(".main regularslider owac").append("Successfully added");
   }
+  );
 }
 );
