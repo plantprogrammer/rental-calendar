@@ -113,7 +113,7 @@ class OWAC_Calendar_Settings
 		/**
 		* Check Switch Case Set Display Calendar Year
 		*/
-		switch ($settings_options['display_calendar_month']) {
+		switch ("3y") {
 			
 			case "1y":
 				$end_year=$start_year + $display_calendar_month;
@@ -199,17 +199,17 @@ class OWAC_Calendar_Settings
 		* Creating calendars for Set year and Month 
 		* Creating calendars for each month by looping 12 times
 		*/
-		for($r=$start_year;$r<=$end_year;$r++){
+		for($r=$start_year-1;$r<=$end_year;$r++){
 			$year = $r;
 			$month_cur = intval(date("m"));
 			$month_cur_u = intval(date("m"));
 		/**
 		* Check If Condition set Current Month and End Month To Year Wise 
 		*/
-			if($r==$start_year || $start_year==$end_year){
+			if($start_year==$end_year){
 				$month_cur =intval(date("m"));
 				$endmonth_cur = 12;
-			}elseif($r < $end_year){
+			}elseif($r < $end_year || $r==$start_year){
 				$month_cur = 1;
 				$endmonth_cur = 12;
 			}else{
@@ -301,7 +301,14 @@ class OWAC_Calendar_Settings
 				}
 			}elseif($r < $end_year){
 				if($endmonth_cur > 12){
-					$endmonth_cur = $endmonth_cur - 12;
+				    if ($end_year - $r == 2)
+				    {
+				        $endmonth_cur = 12;
+				    }
+				    else
+				    {
+				        $endmonth_cur = $endmonth_cur - 12;
+				    }
 				}
 			}else{
 				if($endmonth_cur >= 12){
@@ -423,7 +430,7 @@ class OWAC_Calendar_Settings
 					$wk_day_num ++;
 					if($wk_day_num==7)
 					{
-					    $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
+					    $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no .  "-" . $year;
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
 	                    
 	                    register_setting( 'apartment-' . $reg_setting_apt_num .'-cal', $input_field_id);
@@ -455,7 +462,7 @@ class OWAC_Calendar_Settings
 				    }
 				    if($wk_day_num==7)
 				    {
-				        $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no;
+				        $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no .  "-" . $year;
 				        
 				        register_setting( 'apartment-' . $reg_setting_apt_num . '-cal', $input_field_id);
 					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
@@ -517,7 +524,37 @@ class OWAC_Calendar_Settings
 		       do_settings_sections( 'apartment-' . $name . '-cal' );
     		   submit_button();?>
             </form>
+        <button class="yearBut"id="prev"></button>
+            <button class="yearBut"id="cur"></button>
+            <button class="yearBut"id="next"></button>
         </div> 
+        <script>
+            jQuery(document).ready(function($)
+            {
+                var d = new Date();
+                let year = d.getFullYear() - 1;
+                $(".yearBut").each(function()
+                {
+                    $(this).html(year);
+                    year++;
+                }
+                );
+                $("#prev").click(function()
+                {
+                    $(".owac-slider").owacslider('owacGoTo', 0, true);
+                });
+                $("#cur").click(function()
+                {
+                    $(".owac-slider").owacslider('owacGoTo', 12, true);
+                });
+                $("#next").click(function()
+                {
+                    $(".owac-slider").owacslider('owacGoTo', 24, true);
+                }
+                );
+            }
+            );
+        </script> 
         <?php 
     }
     
