@@ -6,7 +6,7 @@ class OWAC_Calendar_Settings
     {
         add_action("admin_menu", array($this,"create_settings_page"));
         add_action( 'admin_init', array( $this, 'setup_sections' ) );
-	    add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
+	add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("2");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("3");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("4");});   
@@ -431,11 +431,19 @@ class OWAC_Calendar_Settings
 					if($wk_day_num==7)
 					{
 					    $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no .  "-" . $year;
-					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
+					    if ($end_year - $r == 2)
+					    {
+					        $data .= $adj."<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
+						    $data .= "</tr><tr class='day_row'>"; // start a new row
+					    }
+					    else
+					    {
+					        $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>"; 
 	                    
-	                    register_setting( 'apartment-' . $reg_setting_apt_num .'-cal', $input_field_id);
+	                        register_setting( 'apartment-' . $reg_setting_apt_num .'-cal', $input_field_id);
 	                    
-						$data .= "</tr><tr class='day_row'>"; // start a new row
+						    $data .= "</tr><tr class='day_row'>"; // start a new row
+					    }
 					    $wk_day_num=0;
 						$price_row_no++;
 					}
@@ -464,8 +472,15 @@ class OWAC_Calendar_Settings
 				    {
 				        $input_field_id = $apt_num . "-" . $month . "-" . $price_row_no .  "-" . $year;
 				        
-				        register_setting( 'apartment-' . $reg_setting_apt_num . '-cal', $input_field_id);
-					    $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
+				        if ($end_year - $r == 2)
+					    {
+					       $data .= "<td ".$sday."><span class='price'>€" . get_option($input_field_id) . "</span></td>"; 
+					    }
+				        else
+				        {
+				            register_setting( 'apartment-' . $reg_setting_apt_num . '-cal', $input_field_id);
+					        $data .= $adj."<td ".$sday."><input type='text' name='" . $input_field_id . "' id='" . $input_field_id . "' value ='" . get_option($input_field_id) . "'> </td>";
+				        }
 				    }
 				    $wk_day_num ++;
 				    $beg_month_val++;
@@ -524,9 +539,11 @@ class OWAC_Calendar_Settings
 		       do_settings_sections( 'apartment-' . $name . '-cal' );
     		   submit_button();?>
             </form>
-        <button class="yearBut"id="prev"></button>
-            <button class="yearBut"id="cur"></button>
-            <button class="yearBut"id="next"></button>
+            <div id="buttons" style="position: relative;top: -200px;right: -240px;">
+                <button class="yearBut"id="prev"></button>
+                <button class="yearBut"id="cur"></button>
+                <button class="yearBut"id="next"></button>
+            </div>
         </div> 
         <script>
             jQuery(document).ready(function($)
