@@ -6,7 +6,7 @@ class OWAC_Calendar_Settings
     {
         add_action("admin_menu", array($this,"create_settings_page"));
         add_action( 'admin_init', array( $this, 'setup_sections' ) );
-	add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
+	    add_action( 'admin_init', function() {$this->OWAC_calendar_front("1");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("2");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("3");});
         add_action( 'admin_init', function() {$this->OWAC_calendar_front("4");});   
@@ -18,7 +18,7 @@ class OWAC_Calendar_Settings
         add_settings_section( 'calendar', 'Apartment 1 Calendar', function() {$this -> output_calendar("1");}, 'apartment-one-cal' );
         add_settings_section( 'calendar', 'Apartment 2 Calendar', function() {$this -> output_calendar("2");}, 'apartment-two-cal' );
         add_settings_section( 'calendar', 'Apartment 3 Calendar', function() {$this -> output_calendar("3");}, 'apartment-three-cal' );
-        add_settings_section( 'calendar', 'Apartment 4 Calendar', function() {$this -> output_calendar("4");}, 'apartment-four-cal' );
+        //add_settings_section( 'calendar', 'Apartment 4 Calendar', function() {$this -> output_calendar("4");}, 'apartment-four-cal' );
     }
     
     public function output_calendar($apt_num)
@@ -32,7 +32,7 @@ class OWAC_Calendar_Settings
         add_submenu_page("owacapt1","Apartment 1 Prices","Apartment 1 Prices","manage_options","apartment-one-cal",function() {$this->settings_page_content("one");},6);
         add_submenu_page("owacapt1","Apartment 2 Prices","Apartment 2 Prices","manage_options","apartment-two-cal",function() {$this->settings_page_content("two");},7);
         add_submenu_page("owacapt1","Apartment 3 Prices","Apartment 3 Prices","manage_options","apartment-three-cal",function() {$this->settings_page_content("three");},8);
-        add_submenu_page("owacapt1","Apartment 4 Prices","Apartment 4 Prices","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");},9);
+        //add_submenu_page("owacapt1","Apartment 4 Prices","Apartment 4 Prices","manage_options","apartment-four-cal",function() {$this->settings_page_content("four");},9);
     }
     
     private function OWAC_check_date($pv_r,$k,$adj,$wk_day_num,$m,$apartment_short){	
@@ -312,7 +312,7 @@ class OWAC_Calendar_Settings
 				}
 			}else{
 				if($endmonth_cur >= 12){
-					$endmonth_cur = $endmonth_cur - 12;
+					$endmonth_cur = 12;
 				}
 			}
 	
@@ -516,12 +516,17 @@ class OWAC_Calendar_Settings
 										$data .= "<span class='event-name'>".$cat_name."</span>";
 									$data .= "</li>";
 								}	
-							
 							}
+			    			
+			    			$data .= '<div id="buttons">
+                <a class="yearBut button"id="prev"></a>
+                <a class="yearBut button"id="cur"></a>
+                <a class="yearBut button "id="next"></a>
+            </div>';
 			    			
 					$data .= "</ul>
 							</div>";
-
+            
 		$data .= "</div>";
 		
 		$data .= "</div>";
@@ -539,12 +544,13 @@ class OWAC_Calendar_Settings
 		       do_settings_sections( 'apartment-' . $name . '-cal' );
     		   submit_button();?>
             </form>
-            <div id="buttons" style="position: relative;top: -200px;right: -240px;">
-                <button class="yearBut"id="prev"></button>
-                <button class="yearBut"id="cur"></button>
-                <button class="yearBut"id="next"></button>
-            </div>
-        </div> 
+        </div>
+        <style>
+            div#buttons
+            {
+                text-align:center;
+            }
+        </style>
         <script>
             jQuery(document).ready(function($)
             {
@@ -571,7 +577,7 @@ class OWAC_Calendar_Settings
                 );
             }
             );
-        </script> 
+        </script>
         <?php 
     }
     
